@@ -21,6 +21,7 @@ import { ServoResponse } from './ServoResponse.js'
 
 
 const port = new SerialPort('/dev/ttyACM0', e => { if (e) throw e })
+const protocol = new PacketProtocolV1()
 
 const RESPONSES = {
   100: IdentResponse,
@@ -38,8 +39,6 @@ port.on('data', data => {
   console.log(response.toString())
   port.close()
 })
-
-const protocol = new PacketProtocolV1()
 
 // const request = new VersionRequest(protocol).encode()
 // const request = new IdentRequest(protocol).encode()
