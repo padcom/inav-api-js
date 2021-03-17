@@ -63,7 +63,7 @@ export class PacketProtocolV1 extends PacketProtocol {
   }
 
   #getPayloadLength(buffer) {
-    return buffer[3] - 1
+    return buffer[3]
   }
 
   #getPayload(buffer) {

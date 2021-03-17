@@ -1,9 +1,11 @@
-import { PacketProtocol } from './PacketProtocol.js'
-
 function readonly(object, field, value) {
   Object.defineProperty(object, field, {
     get() { return value }
   })
+}
+
+function hex(n) {
+  return `0x${('00' + n.toString(16)).substr(-2)}`
 }
 
 export class Response {
@@ -21,11 +23,35 @@ export class Response {
     }
     const protocol = this.protocolVersion
     const protocolName = PROTOCOL_TO_STRING[protocol] || 'unknown'
-    const command = this.command.toString(16)
+    const command = this.command
     const plLen = this.payloadLength
     const properties = this.#getToStringContent()
 
-    return `${this.constructor.name} (protocol: ${protocol.toString(16)}/${protocolName}, command: ${command}, payload: ${plLen} bytes) ${properties}`
+    return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}, payload: ${hex(plLen)} bytes) ${properties}`
+  }
+
+  getInt8(offset, ...args) {
+    return this.payload.byteLength - 1 >= offset ? this.payload.getint8(offset, ...args) : undefined
+  }
+
+  getUint8(offset, ...args) {
+    return this.payload.byteLength - 1 >= offset ? this.payload.getUint8(offset, ...args) : undefined
+  }
+
+  getInt16(offset, ...args) {
+    return this.payload.byteLength - 2 >= offset ? this.payload.getInt16(offset, ...args) : undefined
+  }
+
+  getUint16(offset, ...args) {
+    return this.payload.byteLength - 2 >= offset ? this.payload.getUint16(offset, ...args) : undefined
+  }
+
+  getInt32(offset, ...args) {
+    return this.payload.byteLength - 4 >= offset ? this.payload.getInt32(offset, ...args) : undefined
+  }
+
+  getUint32(offset, ...args) {
+    return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
   }
 
   #getToStringContent() {

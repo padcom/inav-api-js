@@ -29,11 +29,11 @@ export const MILTITYPES = {
 
 export class IdentResponse extends Response {
   get version() {
-    return parseFloat(this.payload.getUint8(0) / 100).toFixed(2)
+    return parseFloat(this.getUint8(0) / 100).toFixed(2)
   }
 
   get multiType() {
-    return this.payload.getUint8(1)
+    return this.getUint8(1)
   }
 
   get multiTypeStr() {
@@ -42,11 +42,10 @@ export class IdentResponse extends Response {
   }
 
   get mspVersion() {
-    return this.payload.getUint8(2)
+    return this.getUint8(2)
   }
 
-  // PADCOM: out of bounds!
-  // get capability() {
-  //   return this.payload.getUint32(3, true)
-  // }
+  get capability() {
+    return this.getUint32(3, true)
+  }
 }
