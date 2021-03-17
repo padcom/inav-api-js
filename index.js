@@ -16,6 +16,8 @@ import { SensorStatusRequest } from './SensorStatusRequest.js'
 import { SensorStatusResponse } from './SensorStatusResponse.js'
 import { RawIMURequest } from './RawIMURequest.js'
 import { RawIMUResponse } from './RawIMUResponse.js'
+import { ServoRequest } from './ServoRequest.js'
+import { ServoResponse } from './ServoResponse.js'
 
 
 const port = new SerialPort('/dev/ttyACM0', e => { if (e) throw e })
@@ -24,6 +26,7 @@ const RESPONSES = {
   100: IdentResponse,
   101: StatusResponse,
   102: RawIMUResponse,
+  103: ServoResponse,
   150: StatusExResponse,
   151: SensorStatusResponse,
 }
@@ -43,7 +46,8 @@ const protocol = new PacketProtocolV1()
 // const request = new StatusExRequest(protocol).encode()
 // const request = new ActiveBoxesRequest(protocol).encode()
 // const request = new SensorStatusRequest(protocol).encode()
-const request = new RawIMURequest(protocol).encode()
+// const request = new RawIMURequest(protocol).encode()
+const request = new ServoRequest(protocol).encode()
 port.write(request, (e) => {
   if (e) {
     console.log('Error writing data:', e)
