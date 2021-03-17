@@ -1,0 +1,7 @@
+export const MSP_CODES = {
+  MSP_API_VERSION:            1,
+  MSP_IDENT: 100,
+  MSP_STATUS: 101,
+  MSP_ACTIVEBOXES: 113,
+  MSP_STATUS_EX: 150,
+}
