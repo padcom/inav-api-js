@@ -52,8 +52,10 @@ port.on('data', data => {
 // const request = new GPSStatisticsRequest(protocol).encode()
 // import { AttitudeRequest } from './command/Attitude.js'
 // const request = new AttitudeRequest(protocol).encode()
-import { AltitudeRequest } from './command/Altitude.js'
-const request = new AltitudeRequest(protocol).encode()
+// import { AltitudeRequest } from './command/Altitude.js'
+// const request = new AltitudeRequest(protocol).encode()
+import { SonarRequest } from './command/Sonar.js'
+const request = new SonarRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
