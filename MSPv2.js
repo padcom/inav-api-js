@@ -1,13 +1,14 @@
-import { MSP, symbols } from './MSP'
+import { MSP } from './MSP'
+import { readonly, hex } from './utils'
 
 export class MSPv2 extends MSP {
-  encode(code, data) {
+  encode(code, data, direction = MSP.DIRECTION_TO_MSC) {
     const payloadLength = data && data.length ? data.length : 0;
     const length = payloadLength + 9;
     const view = new Uint8Array(length);
-    view[0] = symbols.BEGIN;
-    view[1] = symbols.PROTO_V2;
-    view[2] = symbols.TO_MWC;
+    view[0] = MSP.START_BYTE;
+    view[1] = MSPv2.PROTOCOL_ID;
+    view[2] = direction;
     view[3] = 0; // flag: reserved, set to 0
     view[4] = code & 0xFF;  // code lower byte
     view[5] = (code & 0xFF00) >> 8; // code upper byte
@@ -41,3 +42,5 @@ export class MSPv2 extends MSP {
     return crc;
   }
 }
+
+readonly(MSPv2, 'PROTOCOL_ID', 'X'.charCodeAt(0))

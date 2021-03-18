@@ -1,9 +1,15 @@
-import { MSP, symbols } from './MSP'
+import { MSP } from './MSP'
+import { readonly, hex } from './utils'
 
 export class MSPv1 extends MSP {
   decode(buffer) {
-    const version = this.#getProtocolVersion(buffer)
-    if (version !== symbols.PROTO_V1) {
+    const begin = buffer[0]
+    if (begin !== MSP.START_BYTE) {
+      throw new Error(`Invalid start byte ${hex(buffer[0])}`)
+    }
+
+    const version = buffer[1]
+    if (version !== MSPv1.PROTOCOL_ID) {
       throw new Error('Packet is not MSP V1')
     }
 
@@ -28,14 +34,14 @@ export class MSPv1 extends MSP {
     }
   }
 
-  encode(code, payload) {
+  encode(code, payload, direction = MSP.DIRECTION_TO_MSC) {
     // TODO: Error if code is < 255 and MSPv1 is requested
     const payloadLength = payload && payload.length ? payload.length : 0;
     const length = payloadLength + 6;
     const view = new Uint8Array(length);
-    view[0] = symbols.BEGIN;
-    view[1] = symbols.PROTO_V1;
-    view[2] = symbols.TO_MWC;
+    view[0] = MSP.START_BYTE;
+    view[1] = MSPv1.PROTOCOL_ID
+    view[2] = direction;
     view[3] = payloadLength;
     view[4] = code;
     for (let i = 0; i < payloadLength; i++) {
@@ -46,20 +52,16 @@ export class MSPv1 extends MSP {
     return Buffer.from(view)
   }
 
-  #getBufferDataView(buffer) {
-    return new DataView(new Uint8Array(buffer).buffer)
-  }
-
-  #getProtocolVersion(buffer) {
-    return buffer[1]
-  }
-
   #getCommand(buffer) {
     return buffer[4]
   }
 
   #getDirection(buffer) {
     return String.fromCharCode(buffer[2])    
+  }
+
+  #getBufferDataView(buffer) {
+    return new DataView(new Uint8Array(buffer).buffer)
   }
 
   #getPayloadLength(buffer) {
@@ -88,3 +90,5 @@ export class MSPv1 extends MSP {
     return checksum;
   }
 }
+
+readonly(MSPv1, 'PROTOCOL_ID', 'M'.charCodeAt(0))
