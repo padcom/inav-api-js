@@ -72,8 +72,12 @@ port.on('data', data => {
 // const request = new BoxNamesRequest(protocol).encode()
 // import { PidNamesRequest } from './command/PidNames.js'
 // const request = new PidNamesRequest(protocol).encode()
-import { WPRequest } from './command/WP.js'
-const request = new WPRequest(protocol).encode()
+// import { WPRequest } from './command/WP.js'
+// const request = new WPRequest(protocol).encode()
+// import { BoxIDsRequest } from './command/BoxIDs.js'
+// const request = new BoxIDsRequest(protocol).encode()
+import { ServoMixRulesRequest } from './command/ServoMixRules.js'
+const request = new ServoMixRulesRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
