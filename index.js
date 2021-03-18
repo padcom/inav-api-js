@@ -56,8 +56,10 @@ port.on('data', data => {
 // const request = new AltitudeRequest(protocol).encode()
 // import { SonarRequest } from './command/Sonar.js'
 // const request = new SonarRequest(protocol).encode()
-import { AnalogRequest } from './command/Analog.js'
-const request = new AnalogRequest(protocol).encode()
+// import { AnalogRequest } from './command/Analog.js'
+// const request = new AnalogRequest(protocol).encode()
+import { RCTuningRequest } from './command/RCTuning.js'
+const request = new RCTuningRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
