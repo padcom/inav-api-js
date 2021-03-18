@@ -1,10 +1,8 @@
 #!/usr/bin/env -S node -r esm
 
 import SerialPort from 'serialport'
-import { msp, MSPv1 } from './msp'
-
-const port = new SerialPort('/dev/ttyACM0', { autoOpen: true })
-const protocol = new MSPv1()
+import { MSPv1 } from './MSPv1'
+import { send } from './send'
 
 import { VersionRequest } from './command/Version'
 import { IdentRequest } from './command/Ident'
@@ -34,34 +32,37 @@ import { BoxIDsRequest } from './command/BoxIDs'
 import { ServoMixRulesRequest } from './command/ServoMixRules'
 import { RxConfigRequest } from './command/RxConfig'
 
+const port = new SerialPort('/dev/ttyACM0')
+const protocol = new MSPv1()
+
 async function test() {
-  console.log((await msp(port, new VersionRequest(), protocol)).toString())
-  console.log((await msp(port, new IdentRequest(), protocol)).toString())
-  console.log((await msp(port, new StatusExRequest(), protocol)).toString())
-  console.log((await msp(port, new ActiveBoxesRequest(), protocol)).toString())
-  console.log((await msp(port, new SensorStatusRequest(), protocol)).toString())
-  console.log((await msp(port, new RawImuRequest(), protocol)).toString())
-  console.log((await msp(port, new ServoRequest(), protocol)).toString())
-  console.log((await msp(port, new MotorRequest(), protocol)).toString())
-  console.log((await msp(port, new RcChannelRequest(), protocol)).toString())
-  console.log((await msp(port, new RawGpsRequest(), protocol)).toString())
-  console.log((await msp(port, new CompGpsRequest(), protocol)).toString())
-  console.log((await msp(port, new GpsStatisticsRequest(), protocol)).toString())
-  console.log((await msp(port, new AttitudeRequest(), protocol)).toString())
-  console.log((await msp(port, new AltitudeRequest(), protocol)).toString())
-  console.log((await msp(port, new SonarRequest(), protocol)).toString())
-  console.log((await msp(port, new AnalogRequest(), protocol)).toString())
-  console.log((await msp(port, new RcTuningRequest(), protocol)).toString())
-  console.log((await msp(port, new PIDRequest(), protocol)).toString())
-  console.log((await msp(port, new ArmingConfigRequest(), protocol)).toString())
-  console.log((await msp(port, new LoopTimeRequest(), protocol)).toString())
-  console.log((await msp(port, new ThreeDeeRequest(), protocol)).toString())
-  console.log((await msp(port, new BoxNamesRequest(), protocol)).toString())
-  console.log((await msp(port, new PidNamesRequest(), protocol)).toString())
-  console.log((await msp(port, new WPRequest(), protocol)).toString())
-  console.log((await msp(port, new BoxIDsRequest(), protocol)).toString())
-  console.log((await msp(port, new ServoMixRulesRequest(), protocol)).toString())
-  console.log((await msp(port, new RxConfigRequest(), protocol)).toString())
+  console.log((await send(port, new VersionRequest(), protocol)).toString())
+  console.log((await send(port, new IdentRequest(), protocol)).toString())
+  console.log((await send(port, new StatusExRequest(), protocol)).toString())
+  console.log((await send(port, new ActiveBoxesRequest(), protocol)).toString())
+  console.log((await send(port, new SensorStatusRequest(), protocol)).toString())
+  console.log((await send(port, new RawImuRequest(), protocol)).toString())
+  console.log((await send(port, new ServoRequest(), protocol)).toString())
+  console.log((await send(port, new MotorRequest(), protocol)).toString())
+  console.log((await send(port, new RcChannelRequest(), protocol)).toString())
+  console.log((await send(port, new RawGpsRequest(), protocol)).toString())
+  console.log((await send(port, new CompGpsRequest(), protocol)).toString())
+  console.log((await send(port, new GpsStatisticsRequest(), protocol)).toString())
+  console.log((await send(port, new AttitudeRequest(), protocol)).toString())
+  console.log((await send(port, new AltitudeRequest(), protocol)).toString())
+  console.log((await send(port, new SonarRequest(), protocol)).toString())
+  console.log((await send(port, new AnalogRequest(), protocol)).toString())
+  console.log((await send(port, new RcTuningRequest(), protocol)).toString())
+  console.log((await send(port, new PIDRequest(), protocol)).toString())
+  console.log((await send(port, new ArmingConfigRequest(), protocol)).toString())
+  console.log((await send(port, new LoopTimeRequest(), protocol)).toString())
+  console.log((await send(port, new ThreeDeeRequest(), protocol)).toString())
+  console.log((await send(port, new BoxNamesRequest(), protocol)).toString())
+  console.log((await send(port, new PidNamesRequest(), protocol)).toString())
+  console.log((await send(port, new WPRequest(), protocol)).toString())
+  console.log((await send(port, new BoxIDsRequest(), protocol)).toString())
+  console.log((await send(port, new ServoMixRulesRequest(), protocol)).toString())
+  console.log((await send(port, new RxConfigRequest(), protocol)).toString())
 }
 
 async function loop() {
@@ -74,4 +75,4 @@ async function main() {
   port.close()
 }
 
-main()
+loop()

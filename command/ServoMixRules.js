@@ -12,7 +12,7 @@ export class ServoMixRulesRequest extends Request {
 
 export class ServoMixRulesResponse extends Response {
   get count() {
-    return this.payloadLength / 8
+    return this.payload.byteLength / 8
   }
 
   get servoMixRule() {

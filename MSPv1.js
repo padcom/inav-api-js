@@ -1,20 +1,19 @@
 import { MSP } from './MSP'
-import { readonly, hex } from './utils'
+import { readonly, hex, getByteAtOffset } from './utils'
 
 export class MSPv1 extends MSP {
   decode(buffer) {
-    const begin = buffer[0]
+    const begin = MSP.decodeStartCode(buffer)
     if (begin !== MSP.START_BYTE) {
       throw new Error(`Invalid start byte ${hex(buffer[0])}`)
     }
 
-    const version = buffer[1]
+    const version = MSP.decodeProtocolCode(buffer)
     if (version !== MSPv1.PROTOCOL_ID) {
       throw new Error('Packet is not MSP V1')
     }
 
     const direction = this.#getDirection(buffer)
-    const payloadLength = this.#getPayloadLength(buffer)
     const command = this.#getCommand(buffer)
     const payload = this.#getPayload(buffer)
     const crc = this.#getCRC(buffer)
@@ -25,11 +24,9 @@ export class MSPv1 extends MSP {
 
     return {
       buffer: this.#getBufferDataView(buffer),
-      protocolVersion: version,
+      protocol: this,
       direction,
       command,
-      crc,
-      payloadLength,
       payload
     }
   }
@@ -93,20 +90,18 @@ export class MSPv1 extends MSP {
 readonly(MSPv1, 'PROTOCOL_ID', 'M'.charCodeAt(0))
 
 MSPv1.decodeCommandCode = function(buffer) {
-  if (buffer instanceof Buffer) return buffer[4]
-  else if (buffer instanceof DataView) return buffer.getUint8(4)
-  else throw new Error('Don\'t know how to fetch command code from', buffer.prototype)
+  return getByteAtOffset(buffer, 4)
 }
 
 MSPv1.decodePayloadOffset = function(buffer) {
-  return buffer[3] === 0xFF ? 7 : 5
+  return getByteAtOffset(buffer, 3) === 0xFF ? 7 : 5
   }
 
 MSPv1.decodePayloadLength = function(buffer) {
-  if (buffer[3] !== 0xFF) {
-    return buffer[3]
+  if (getByteAtOffset(buffer, 3) !== 0xFF) {
+    return getByteAtOffset(buffer, 3)
   } else {
-    return buffer[5] | (buffer[6] << 8)
+    return getByteAtOffset(buffer, 5) | (getByteAtOffset(buffer, 6) << 8)
   }
 }
 

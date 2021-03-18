@@ -1,5 +1,5 @@
 import { MSP } from './MSP'
-import { readonly, hex } from './utils'
+import { readonly, hex, getByteAtOffset } from './utils'
 
 export class MSPv2 extends MSP {
   encode(direction, command, payload) {
@@ -46,9 +46,7 @@ export class MSPv2 extends MSP {
 readonly(MSPv2, 'PROTOCOL_ID', 'X'.charCodeAt(0))
 
 MSPv2.decodeCommandCode = function(buffer) {
-  if (buffer instanceof Buffer) return buffer[4]
-  else if (buffer instanceof DataView) return buffer.getUint8(4)
-  else throw new Error('Don\'t know how to fetch command code from', buffer.prototype)
+  return getByteAtOffset(buffer, 4)
 }
 
 MSPv2.decodePayloadOffset = function(buffer) {

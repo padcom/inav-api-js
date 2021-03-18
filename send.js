@@ -1,11 +1,9 @@
+import { MSP } from './MSP'
 import { MSPv1 } from './MSPv1'
 import { MSPv2 } from './MSPv2'
-import { MSP } from './MSP'
 import { CommandRegistry } from './CommandRegistry'
 
-export { MSPv1, MSPv2 }
-
-export const PROTOCOL_CLASSES = {
+const PROTOCOL_CLASSES = {
   [MSPv1.PROTOCOL_ID]: MSPv1,
   [MSPv2.PROTOCOL_ID]: MSPv2
 }
@@ -109,4 +107,4 @@ function mspWithRetry(count) {
   }
 }
 
-export const msp = mspWithRetry(3)
+export const send = mspWithRetry(3)

@@ -11,7 +11,7 @@ export class RcChannelRequest extends Request {
 
 export class RcChannelResponse extends Response {
   get count() {
-    return this.payloadLength / 2
+    return this.payload.byteLength / 2
   }
 
   get channel() {

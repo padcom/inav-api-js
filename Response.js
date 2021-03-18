@@ -13,10 +13,10 @@ export class Response {
     const PROTOCOL_TO_STRING = {
       0x4d: 'MSPv1'
     }
-    const protocol = this.protocolVersion
+    const protocol = this.protocol.constructor.PROTOCOL_ID
     const protocolName = PROTOCOL_TO_STRING[protocol] || 'unknown'
     const command = this.command
-    const plLen = this.payloadLength
+    const plLen = this.payload.byteLength
     const properties = this.getToStringContent()
 
     return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}, payload: ${hex(plLen)} bytes) ${properties}`

@@ -12,7 +12,7 @@ export class PIDRequest extends Request {
 
 export class PIDResponse extends Response {
   get count() {
-    return this.payloadLength / 3
+    return this.payload.byteLength / 3
   }
 
   get pid() {

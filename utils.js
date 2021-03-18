@@ -8,6 +8,12 @@ export function getKeyForValue(obj, value) {
   return Object.entries(obj).find(([k, v]) => v === value)
 }
 
+export function getByteAtOffset(buffer, offset) {
+  if (buffer instanceof Buffer) return buffer[offset]
+  else if (buffer instanceof DataView) return buffer.getUint8(offset)
+  else throw new Error('Don\'t know how to get data from', buffer.constructor)
+}
+
 export function readonly(object, field, value) {
   Object.defineProperty(object, field, {
     get() { return value }

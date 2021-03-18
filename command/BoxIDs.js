@@ -11,7 +11,7 @@ export class BoxIDsRequest extends Request {
 
 export class BoxIDsResponse extends Response {
   get count() {
-    return this.payloadLength
+    return this.payload.byteLength
   }
 
   get motor() {
