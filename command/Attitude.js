@@ -1,7 +1,7 @@
 import { Request } from '../Request.js'
 import { Response } from '../Response.js'
 
-export const MSP_ATTITUDE = 108
+export const MSP_ATTITUDE = 109
 
 export class AttitudeRequest extends Request {
   constructor(protocol) {
