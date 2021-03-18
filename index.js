@@ -14,6 +14,7 @@ import { SensorStatusRequest } from './command/SensorStatus.js'
 import { RawIMURequest } from './command/RawIMU.js'
 import { ServoRequest } from './command/Servo.js'
 import { MotorRequest } from './command/Motor.js'
+import { RcChannelRequest } from './command/RcChannel.js'
 import { sleep } from './utils.js'
 
 
@@ -41,7 +42,9 @@ port.on('data', data => {
 // const request = new SensorStatusRequest(protocol).encode()
 // const request = new RawIMURequest(protocol).encode()
 // const request = new ServoRequest(protocol).encode()
-const request = new MotorRequest(protocol).encode()
+// const request = new MotorRequest(protocol).encode()
+const request = new RcChannelRequest(protocol).encode()
+
 port.write(request, (e) => {
   if (e) {
     console.log('Error writing data:', e)

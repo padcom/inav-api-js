@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { hex } from './utils.js'
 import { UnknownResponse } from './command/Unknown.js'
 
 export class CommandRegistry {
