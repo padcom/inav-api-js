@@ -63,11 +63,16 @@ export class PacketProtocolV1 extends PacketProtocol {
   }
 
   #getPayloadLength(buffer) {
-    return buffer[3]
+    if (buffer[3] !== 0xFF) {
+      return buffer[3]
+    } else {
+      return buffer[5] | (buffer[6] << 8)
+    }
   }
 
   #getPayload(buffer) {
-    return new DataView(new Uint8Array(buffer).buffer, 5, this.#getPayloadLength(buffer))
+    const payloadOffset = buffer[3] === 0xFF ? 7 : 5
+    return new DataView(new Uint8Array(buffer).buffer, payloadOffset, this.#getPayloadLength(buffer))
   }
 
   #getCRC(buffer) {
