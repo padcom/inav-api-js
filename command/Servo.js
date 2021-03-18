@@ -1,9 +1,11 @@
 import { Request } from '../Request.js'
 import { Response } from '../Response.js'
 
+export const MSP_SERVO = 103
+
 export class ServoRequest extends Request {
   constructor(protocol) {
-    super(protocol, 103)
+    super(protocol, MSP_SERVO)
   }
 }
 

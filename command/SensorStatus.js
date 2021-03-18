@@ -1,9 +1,11 @@
 import { Request } from '../Request.js'
 import { Response } from '../Response.js'
 
+export const MSP_SENSOR_STATUS = 151
+
 export class SensorStatusRequest extends Request {
   constructor(protocol) {
-    super(protocol, 151)
+    super(protocol, MSP_SENSOR_STATUS)
   }
 }
 

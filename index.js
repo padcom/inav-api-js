@@ -13,6 +13,7 @@ import { ActiveBoxesRequest } from './command/ActiveBoxes.js'
 import { SensorStatusRequest, SensorStatusResponse } from './command/SensorStatus.js'
 import { RawIMURequest, RawIMUResponse } from './command/RawIMU.js'
 import { ServoRequest, ServoResponse } from './command/Servo.js'
+import { sleep } from './utils.js'
 
 
 const port = new SerialPort('/dev/ttyACM0', e => { if (e) throw e })
@@ -33,7 +34,7 @@ port.on('data', data => {
   const ResponseClass = RESPONSES[PacketProtocol.decodeCommandCode(data)] || UnknownResponse
   const response = new ResponseClass(protocol, data)
   console.log(response.toString())
-  port.close()
+  sleep(100).then(() => { port.close() })
 })
 
 // const request = new VersionRequest(protocol).encode()

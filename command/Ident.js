@@ -2,6 +2,14 @@ import { Request } from '../Request.js'
 import { Response } from '../Response.js'
 import { getKeyForValue } from '../utils.js'
 
+export const MSP_IDENT = 100
+
+export class IdentRequest extends Request {
+  constructor(protocol) {
+    super(protocol, MSP_IDENT)
+  }
+}
+
 export const MILTITYPES = {
   TRI:           1,  // Tricopter
   QUADP:         2,  // Quadrocopter +
@@ -23,12 +31,6 @@ export const MILTITYPES = {
   HELI_90_DEG:   16,
   VTAIL4:        17,
   HEX6H:         18,
-}
-
-export class IdentRequest extends Request {
-  constructor(protocol) {
-    super(protocol, 100)
-  }
 }
 
 export class IdentResponse extends Response {

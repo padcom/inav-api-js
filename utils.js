@@ -17,3 +17,7 @@ export function readonly(object, field, value) {
 export function hex(n) {
   return `0x${('00' + n.toString(16)).substr(-2)}`
 }
+
+export function sleep(ms) {
+  return new Promise(resolve => { setTimeout(resolve, ms) })
+}

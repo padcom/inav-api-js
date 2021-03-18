@@ -1,9 +1,11 @@
 import { Request } from '../Request.js'
 import { Response } from '../Response.js'
 
+export const MSP_RAW_IMU = 102
+
 export class RawIMURequest extends Request {
   constructor(protocol) {
-    super(protocol, 102)
+    super(protocol, MSP_RAW_IMU)
   }
 }
 
