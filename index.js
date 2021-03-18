@@ -62,8 +62,10 @@ port.on('data', data => {
 // const request = new RCTuningRequest(protocol).encode()
 // import { PIDRequest } from './command/PID.js'
 // const request = new PIDRequest(protocol).encode()
-import { ArmingConfigRequest } from './command/ArmingConfig.js'
-const request = new ArmingConfigRequest(protocol).encode()
+// import { ArmingConfigRequest } from './command/ArmingConfig.js'
+// const request = new ArmingConfigRequest(protocol).encode()
+import { LoopTimeRequest } from './command/LoopTime.js'
+const request = new LoopTimeRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
