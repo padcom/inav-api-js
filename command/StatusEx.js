@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_STATUS_EX = 150
 
 export class StatusExRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_STATUS_EX)
+  constructor() {
+    super(MSP_STATUS_EX)
   }
 }
 

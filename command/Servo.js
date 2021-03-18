@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_SERVO = 103
 
 export class ServoRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_SERVO)
+  constructor() {
+    super(MSP_SERVO)
   }
 }
 

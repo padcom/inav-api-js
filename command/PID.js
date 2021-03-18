@@ -5,8 +5,8 @@ import { getKeyForValue } from '../utils'
 export const MSP_PID = 112
 
 export class PIDRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_PID)
+  constructor() {
+    super(MSP_PID)
   }
 }
 

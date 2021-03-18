@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_GPSStatistics = 166
 
 export class GpsStatisticsRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_GPSStatistics)
+  constructor() {
+    super(MSP_GPSStatistics)
   }
 }
 

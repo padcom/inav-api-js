@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_RX_CONFIG = 44
 
 export class RxConfigRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_RX_CONFIG)
+  constructor() {
+    super(MSP_RX_CONFIG)
   }
 }
 

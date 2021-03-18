@@ -5,7 +5,7 @@ export class MSP {
     throw new Error('Packet class is abstract and does not implement the "decode" method. Use protocol-specific packet class instead.')
   }
   
-  encode(code, data) {
+  encode(direction, command, payload) {
     throw new Error('Packet class is abstract and does not implement the "encode" method. Use protocol-specific packet class instead.')
   }
 }

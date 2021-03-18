@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_API_VERSION = 1
 
 export class VersionRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_API_VERSION)
+  constructor() {
+    super(MSP_API_VERSION)
   }
 }
 

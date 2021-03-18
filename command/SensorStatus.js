@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_SENSOR_STATUS = 151
 
 export class SensorStatusRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_SENSOR_STATUS)
+  constructor() {
+    super(MSP_SENSOR_STATUS)
   }
 }
 

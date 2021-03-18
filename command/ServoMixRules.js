@@ -5,8 +5,8 @@ import { ServoMixRule } from '../ServoMixRule'
 export const MSP_SERVO_MIX_RULES = 241
 
 export class ServoMixRulesRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_SERVO_MIX_RULES)
+  constructor() {
+    super(MSP_SERVO_MIX_RULES)
   }
 }
 

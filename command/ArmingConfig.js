@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_ARMING_CONFIG = 61
 
 export class ArmingConfigRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_ARMING_CONFIG)
+  constructor() {
+    super(MSP_ARMING_CONFIG)
   }
 }
 

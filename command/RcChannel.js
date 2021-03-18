@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_RC = 105
 
 export class RcChannelRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_RC)
+  constructor() {
+    super(MSP_RC)
   }
 }
 

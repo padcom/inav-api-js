@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_COMP_GPS = 107
 
 export class CompGpsRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_COMP_GPS)
+  constructor() {
+    super(MSP_COMP_GPS)
   }
 }
 

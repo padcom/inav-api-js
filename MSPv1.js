@@ -34,7 +34,7 @@ export class MSPv1 extends MSP {
     }
   }
 
-  encode(code, payload, direction = MSP.DIRECTION_TO_MSC) {
+  encode(direction, command, payload) {
     // TODO: Error if code is < 255 and MSPv1 is requested
     const payloadLength = payload && payload.length ? payload.length : 0;
     const length = payloadLength + 6;
@@ -43,7 +43,7 @@ export class MSPv1 extends MSP {
     view[1] = MSPv1.PROTOCOL_ID
     view[2] = direction;
     view[3] = payloadLength;
-    view[4] = code;
+    view[4] = command;
     for (let i = 0; i < payloadLength; i++) {
         view[i + 5] = payload[i];
     }

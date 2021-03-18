@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_LOOP_TIME = 73
 
 export class LoopTimeRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_LOOP_TIME)
+  constructor() {
+    super(MSP_LOOP_TIME)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_SONAR = 58
 
 export class SonarRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_SONAR)
+  constructor() {
+    super(MSP_SONAR)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_WP = 118
 
 export class WPRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_WP)
+  constructor() {
+    super(MSP_WP)
   }
 }
 

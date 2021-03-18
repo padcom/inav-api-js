@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_ALTITUDE = 108
 
 export class AltitudeRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_ALTITUDE)
+  constructor() {
+    super(MSP_ALTITUDE)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_RC_TUNING = 111
 
 export class RcTuningRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_RC_TUNING)
+  constructor() {
+    super(MSP_RC_TUNING)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_PIDNAMES = 117
 
 export class PidNamesRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_PIDNAMES)
+  constructor() {
+    super(MSP_PIDNAMES)
   }
 }
 

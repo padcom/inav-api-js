@@ -1,11 +1,6 @@
 export class Request {
-  constructor(protocol, command) {
-    this.protocol = protocol
+  constructor(command) {
     this.command = command
-    this.data = null
-  }
-
-  encode() {
-    return this.protocol.encode(this.command, this.data)
+    this.payload = null
   }
 }

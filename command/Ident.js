@@ -5,8 +5,8 @@ import { getKeyForValue } from '../utils'
 export const MSP_IDENT = 100
 
 export class IdentRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_IDENT)
+  constructor() {
+    super(MSP_IDENT)
   }
 }
 

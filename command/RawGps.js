@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_RAW_GPS = 106
 
 export class RawGpsRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_RAW_GPS)
+  constructor() {
+    super(MSP_RAW_GPS)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_ATTITUDE = 109
 
 export class AttitudeRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_ATTITUDE)
+  constructor() {
+    super(MSP_ATTITUDE)
   }
 }
 

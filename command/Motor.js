@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_MOTOR = 104
 
 export class MotorRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_MOTOR)
+  constructor() {
+    super(MSP_MOTOR)
   }
 }
 

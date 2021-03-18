@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_3D = 124
 
 export class ThreeDeeRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_3D)
+  constructor() {
+    super(MSP_3D)
   }
 }
 

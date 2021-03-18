@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_MISC = 114
 
 export class MiscRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_MISC)
+  constructor() {
+    super(MSP_MISC)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_BOXNAMES = 116
 
 export class BoxNamesRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_BOXNAMES)
+  constructor() {
+    super(MSP_BOXNAMES)
   }
 }
 

@@ -4,8 +4,8 @@ import { Response } from '../Response'
 export const MSP_ANALOG = 110
 
 export class AnalogRequest extends Request {
-  constructor(protocol) {
-    super(protocol, MSP_ANALOG)
+  constructor() {
+    super(MSP_ANALOG)
   }
 }
 
