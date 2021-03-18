@@ -27,8 +27,8 @@ async function mspQuery(port, request, protocol, timeout = 1000, debug = false) 
     const STATE_START = 0
     const STATE_CONTINUE_READING_DATA = 1
 
-    let buffer = Buffer.from([])
     let state = STATE_START
+    let buffer = null
     let ProtocolClass = null
 
     function handler(data) {
