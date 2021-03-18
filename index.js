@@ -48,8 +48,10 @@ port.on('data', data => {
 // const request = new RcChannelRequest(protocol).encode()
 // const request = new RawGPSRequest(protocol).encode()
 // const request = new CompGPSRequest(protocol).encode()
-import { GPSStatisticsRequest } from './command/GPSStatistics.js'
-const request = new GPSStatisticsRequest(protocol).encode()
+// import { GPSStatisticsRequest } from './command/GPSStatistics.js'
+// const request = new GPSStatisticsRequest(protocol).encode()
+import { AttitudeRequest } from './command/Attitude.js'
+const request = new AttitudeRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
