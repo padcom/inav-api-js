@@ -7,7 +7,7 @@ export const symbols = {
   UNSUPPORTED: '!'.charCodeAt(0),
 }
 
-export class PacketProtocol {
+export class MSP {
   decode(buffer) {
     throw new Error('Packet class is abstract and does not implement the "decode" method. Use protocol-specific packet class instead.')
   }
@@ -17,12 +17,12 @@ export class PacketProtocol {
   }
 }
 
-PacketProtocol.decodeCommandCode = function(buffer) {
+MSP.decodeCommandCode = function(buffer) {
   if (buffer instanceof Buffer) return buffer[4]
   else if (buffer instanceof DataView) return buffer.getUint8(4)
 }
 
-PacketProtocol.decodeProtocol = function(buffer) {
+MSP.decodeProtocol = function(buffer) {
   if (buffer instanceof Buffer) return buffer[1]
   else if (buffer instanceof DataView) return buffer.getUint8(1)
 }

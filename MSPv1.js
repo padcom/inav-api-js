@@ -1,6 +1,6 @@
-import { PacketProtocol, symbols } from './PacketProtocol'
+import { MSP, symbols } from './MSP'
 
-export class PacketProtocolV1 extends PacketProtocol {
+export class MSPv1 extends MSP {
   decode(buffer) {
     const version = this.#getProtocolVersion(buffer)
     if (version !== symbols.PROTO_V1) {

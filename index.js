@@ -2,19 +2,19 @@
 
 import SerialPort from 'serialport'
 
-import { PacketProtocol } from './PacketProtocol'
-import { PacketProtocolV1 } from './PacketProtocolV1'
+import { MSP } from './MSP'
+import { MSPv1 } from './MSPv1'
 import { sleep } from './utils'
 import { CommandRegistry } from './CommandRegistry'
 
 const port = new SerialPort('/dev/ttyACM0', e => { if (e) throw e })
-const protocol = new PacketProtocolV1()
+const protocol = new MSPv1()
 const registry = new CommandRegistry()
 registry.init()
 
 port.on('data', data => {
   console.log('<', data)
-  const code = PacketProtocol.decodeCommandCode(data)
+  const code = MSP.decodeCommandCode(data)
   const ResponseClass = registry.getCommandByCode(code).response
   const response = new ResponseClass(protocol, data)
   console.log(response.toString())

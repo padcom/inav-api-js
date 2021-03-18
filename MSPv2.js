@@ -1,6 +1,6 @@
-import { PacketProtocol, symbols } from './PacketProtocol'
+import { MSP, symbols } from './MSP'
 
-export class PacketProtocolV2 extends PacketProtocol {
+export class MSPv2 extends MSP {
   encode(code, data) {
     const payloadLength = data && data.length ? data.length : 0;
     const length = payloadLength + 9;
