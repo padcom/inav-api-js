@@ -66,8 +66,8 @@ port.on('data', data => {
 // const request = new ArmingConfigRequest(protocol).encode()
 // import { LoopTimeRequest } from './command/LoopTime.js'
 // const request = new LoopTimeRequest(protocol).encode()
-import { MiscRequest } from './command/Misc.js'
-const request = new MiscRequest(protocol).encode()
+import { ThreeDeeRequest } from './command/3D.js'
+const request = new ThreeDeeRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
