@@ -10,7 +10,7 @@ export class MSPv1 extends MSP {
 
     const version = MSP.decodeProtocolCode(buffer)
     if (version !== MSPv1.PROTOCOL_ID) {
-      throw new Error('Packet is not MSP V1')
+      throw new Error('Packet is not MSP v1')
     }
 
     const direction = this.#getDirection(buffer)
@@ -54,7 +54,7 @@ export class MSPv1 extends MSP {
   }
 
   #getDirection(buffer) {
-    return String.fromCharCode(buffer[2])    
+    return String.fromCharCode(buffer[2])
   }
 
   #getBufferDataView(buffer) {

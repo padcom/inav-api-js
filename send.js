@@ -11,7 +11,7 @@ const PROTOCOL_CLASSES = {
 const registry = new CommandRegistry()
 registry.init()
 
-async function mspQuery(port, request, protocol, timeout = 1000, debug = false) {
+async function mspQuery(port, request, protocol, timeout = 100, debug = false) {
   if (debug) console.log('[MSP]', request)
 
   return new Promise((resolve, reject) => {
@@ -88,11 +88,12 @@ async function mspQuery(port, request, protocol, timeout = 1000, debug = false) 
 
     port.on('data', handler)
 
-    port.write(protocol.encode(MSP.DIRECTION_TO_MSC, request.command, request.payload), e => {
+    const command = protocol.encode(MSP.DIRECTION_TO_MSC, request.command, request.payload)
+    port.write(command, e => {
       if (e) {
         reject(e)
       } else {
-        if (debug) console.log('[MSP] >', protocol.encode(request.code, request.payload))
+        if (debug) console.log('[MSP] >', command)
       }
     })
   })

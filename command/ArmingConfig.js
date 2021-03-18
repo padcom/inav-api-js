@@ -10,11 +10,11 @@ export class ArmingConfigRequest extends Request {
 }
 
 export class ArmingConfigResponse extends Response {
-  get auto_disarm_delay() {
+  get autoDisarmDelay() {
     return this.getUint8(0)
   }
 
-  get disarm_kill_switch() {
+  get disarmKillSwitch() {
     return this.getUint8(1)
   }
 }

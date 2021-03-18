@@ -1,7 +1,7 @@
 #!/usr/bin/env -S node -r esm
 
 import SerialPort from 'serialport'
-import { MSPv1 } from './MSPv1'
+import { MSPv2 } from './MSPv2'
 import { send } from './send'
 
 import { VersionRequest } from './command/Version'
@@ -33,7 +33,7 @@ import { ServoMixRulesRequest } from './command/ServoMixRules'
 import { RxConfigRequest } from './command/RxConfig'
 
 const port = new SerialPort('/dev/ttyACM0')
-const protocol = new MSPv1()
+const protocol = new MSPv2()
 
 async function test() {
   console.log((await send(port, new VersionRequest(), protocol)).toString())

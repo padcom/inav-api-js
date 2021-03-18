@@ -34,7 +34,7 @@ export class RawGpsResponse extends Response {
     return this.getUint16(12, true)
   }
   
-  get ground_course() {
+  get groundCourse() {
     return this.getUint16(14, true)
   }
   
