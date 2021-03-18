@@ -88,6 +88,7 @@ export class MSPv1 extends MSP {
 }
 
 readonly(MSPv1, 'PROTOCOL_ID', 'M'.charCodeAt(0))
+readonly(MSPv1, 'PROTOCOL_NAME', 'MSPv1')
 
 MSPv1.decodeCommandCode = function(buffer) {
   return getByteAtOffset(buffer, 4)

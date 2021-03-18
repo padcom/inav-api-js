@@ -2,7 +2,6 @@ import { getObjectPropertyNames, readonly, hex } from './utils'
 
 export class Response {
   constructor(protocol, buffer) {
-    this.protocol = protocol
     const decoded = protocol.decode(buffer)
     Object.keys(decoded).forEach(key => {
       readonly(this, key, decoded[key])
@@ -10,11 +9,8 @@ export class Response {
   }
 
   toString() {
-    const PROTOCOL_TO_STRING = {
-      0x4d: 'MSPv1'
-    }
     const protocol = this.protocol.constructor.PROTOCOL_ID
-    const protocolName = PROTOCOL_TO_STRING[protocol] || 'unknown'
+    const protocolName = this.protocol.constructor.PROTOCOL_NAME
     const command = this.command
     const plLen = this.payload.byteLength
     const properties = this.getToStringContent()

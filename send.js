@@ -44,6 +44,11 @@ async function mspQuery(port, request, protocol, timeout = 1000, debug = false) 
 
         ProtocolClass = PROTOCOL_CLASSES[MSP.decodeProtocolCode(buffer)]
 
+        if (!ProtocolClass) {
+          if (debug) console.log(`[MSP] Unknown protocol (${MSP.decodeProtocolCode(buffer)}) - ignoring`)
+          return
+        }
+
         if (ProtocolClass.decodeExpectedPacketLength(buffer) === buffer.length) {
           done()
         } else {
@@ -93,8 +98,8 @@ async function mspQuery(port, request, protocol, timeout = 1000, debug = false) 
   })
 }
 
-function mspWithRetry(count) {
-  return async (port, request, protocol, timeout = 1000, debug = false) => {
+function mspQueryWithRetry(count) {
+  return async (port, request, protocol, timeout = 100, debug = false) => {
     let counter = count
     while (counter > 0) {
       try {
@@ -107,4 +112,4 @@ function mspWithRetry(count) {
   }
 }
 
-export const send = mspWithRetry(3)
+export const send = mspQueryWithRetry(3)
