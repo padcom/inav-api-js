@@ -3,13 +3,13 @@ import { Response } from '../Response.js'
 
 export const MSP_RAW_GPS = 106
 
-export class RawGPSRequest extends Request {
+export class RawGpsRequest extends Request {
   constructor(protocol) {
     super(protocol, MSP_RAW_GPS)
   }
 }
 
-export class RawGPSResponse extends Response {
+export class RawGpsResponse extends Response {
   get fix() {
     return this.getUint8(0)
   }

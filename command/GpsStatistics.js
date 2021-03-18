@@ -3,13 +3,13 @@ import { Response } from '../Response.js'
 
 export const MSP_GPSStatistics = 166
 
-export class GPSStatisticsRequest extends Request {
+export class GpsStatisticsRequest extends Request {
   constructor(protocol) {
     super(protocol, MSP_GPSStatistics)
   }
 }
 
-export class GPSStatisticsResponse extends Response {
+export class GpsStatisticsResponse extends Response {
   get messageDt() {
     return this.getUint16(0, true)
   }

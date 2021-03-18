@@ -4,19 +4,6 @@ import SerialPort from 'serialport'
 
 import { PacketProtocol } from './PacketProtocol.js'
 import { PacketProtocolV1 } from './PacketProtocolV1.js'
-import { UnknownResponse } from './command/Unknown.js'
-import { VersionRequest } from './command/Version.js'
-import { IdentRequest } from './command/Ident.js'
-import { StatusRequest } from './command/Status.js'
-import { StatusExRequest } from './command/StatusEx.js'
-import { ActiveBoxesRequest } from './command/ActiveBoxes.js'
-import { SensorStatusRequest } from './command/SensorStatus.js'
-import { RawIMURequest } from './command/RawIMU.js'
-import { ServoRequest } from './command/Servo.js'
-import { MotorRequest } from './command/Motor.js'
-import { RcChannelRequest } from './command/RcChannel.js'
-import { RawGPSRequest } from './command/RawGPS.js'
-import { CompGPSRequest } from './command/CompGPS.js'
 import { sleep } from './utils.js'
 
 
@@ -42,14 +29,17 @@ port.on('data', data => {
 // const request = new StatusExRequest(protocol).encode()
 // const request = new ActiveBoxesRequest(protocol).encode()
 // const request = new SensorStatusRequest(protocol).encode()
-// const request = new RawIMURequest(protocol).encode()
+import { RawImuRequest } from './command/RawImu.js'
+const request = new RawImuRequest(protocol).encode()
 // const request = new ServoRequest(protocol).encode()
 // const request = new MotorRequest(protocol).encode()
 // const request = new RcChannelRequest(protocol).encode()
-// const request = new RawGPSRequest(protocol).encode()
-// const request = new CompGPSRequest(protocol).encode()
-// import { GPSStatisticsRequest } from './command/GPSStatistics.js'
-// const request = new GPSStatisticsRequest(protocol).encode()
+// import { RawGpsRequest } from './command/RawGps.js'
+// const request = new RawGpsRequest(protocol).encode()
+// import { CompGpsRequest } from './command/CompGps.js'
+// const request = new CompGpsRequest(protocol).encode()
+// import { GpsStatisticsRequest } from './command/GpsStatistics.js'
+// const request = new GpsStatisticsRequest(protocol).encode()
 // import { AttitudeRequest } from './command/Attitude.js'
 // const request = new AttitudeRequest(protocol).encode()
 // import { AltitudeRequest } from './command/Altitude.js'
@@ -58,8 +48,8 @@ port.on('data', data => {
 // const request = new SonarRequest(protocol).encode()
 // import { AnalogRequest } from './command/Analog.js'
 // const request = new AnalogRequest(protocol).encode()
-// import { RCTuningRequest } from './command/RCTuning.js'
-// const request = new RCTuningRequest(protocol).encode()
+// import { RcTuningRequest } from './command/RcTuning.js'
+// const request = new RcTuningRequest(protocol).encode()
 // import { PIDRequest } from './command/PID.js'
 // const request = new PIDRequest(protocol).encode()
 // import { ArmingConfigRequest } from './command/ArmingConfig.js'
@@ -76,8 +66,10 @@ port.on('data', data => {
 // const request = new WPRequest(protocol).encode()
 // import { BoxIDsRequest } from './command/BoxIDs.js'
 // const request = new BoxIDsRequest(protocol).encode()
-import { ServoMixRulesRequest } from './command/ServoMixRules.js'
-const request = new ServoMixRulesRequest(protocol).encode()
+// import { ServoMixRulesRequest } from './command/ServoMixRules.js'
+// const request = new ServoMixRulesRequest(protocol).encode()
+// import { RxConfigRequest } from './command/RxConfig.js'
+// const request = new RxConfigRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {

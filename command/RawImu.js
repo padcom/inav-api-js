@@ -3,13 +3,13 @@ import { Response } from '../Response.js'
 
 export const MSP_RAW_IMU = 102
 
-export class RawIMURequest extends Request {
+export class RawImuRequest extends Request {
   constructor(protocol) {
     super(protocol, MSP_RAW_IMU)
   }
 }
 
-export class RawIMUResponse extends Response {
+export class RawImuResponse extends Response {
   get accelerometer() {
     return [
       this.getInt16(0, true) / 512,

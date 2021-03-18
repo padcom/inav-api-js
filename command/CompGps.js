@@ -3,13 +3,13 @@ import { Response } from '../Response.js'
 
 export const MSP_COMP_GPS = 107
 
-export class CompGPSRequest extends Request {
+export class CompGpsRequest extends Request {
   constructor(protocol) {
     super(protocol, MSP_COMP_GPS)
   }
 }
 
-export class CompGPSResponse extends Response {
+export class CompGpsResponse extends Response {
   get distanceToHome() {
     return this.getUint16(0, 1)
   }

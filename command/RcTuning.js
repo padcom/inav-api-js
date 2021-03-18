@@ -3,13 +3,13 @@ import { Response } from '../Response.js'
 
 export const MSP_RC_TUNING = 111
 
-export class RCTuningRequest extends Request {
+export class RcTuningRequest extends Request {
   constructor(protocol) {
     super(protocol, MSP_RC_TUNING)
   }
 }
 
-export class RCTuningResponse extends Response {
+export class RcTuningResponse extends Response {
   get rate() {
     return parseFloat((this.getUint8(0) / 100).toFixed(2))
   }
