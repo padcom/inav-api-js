@@ -23,7 +23,7 @@ export class Response {
   }
 
   getInt8(offset, ...args) {
-    return this.payload.byteLength - 1 >= offset ? this.payload.getint8(offset, ...args) : undefined
+    return this.payload.byteLength - 1 >= offset ? this.payload.getInt8(offset, ...args) : undefined
   }
 
   getUint8(offset, ...args) {
