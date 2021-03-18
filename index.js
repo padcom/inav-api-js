@@ -16,7 +16,6 @@ registry.init()
 
 port.on('data', data => {
   console.log('<', data)
-  // const ResponseClass = RESPONSES[PacketProtocol.decodeCommandCode(data)] || UnknownResponse
   const code = PacketProtocol.decodeCommandCode(data)
   const ResponseClass = registry.getCommandByCode(code).response
   const response = new ResponseClass(protocol, data)
