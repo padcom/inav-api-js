@@ -1,4 +1,4 @@
-import { readonly, hex } from './utils.js'
+import { getObjectPropertyNames, readonly, hex } from './utils.js'
 
 export class Response {
   constructor(protocol, buffer) {
@@ -47,10 +47,9 @@ export class Response {
   }
 
   #getToStringContent() {
-    const props = Object.getOwnPropertyNames(Object.getPrototypeOf(this))
-    const content = props
-      .filter(prop => typeof this[prop] !== 'function')
-      .map(prop => `  ${prop} = ${this[prop]}`).join('\n')
+    const content = getObjectPropertyNames(this)
+      .map(prop => `  ${prop} = ${this[prop]}`)
+      .join('\n')
 
     if (content !== '') return `{\n${content}\n}`
     else return ''

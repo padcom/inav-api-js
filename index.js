@@ -39,10 +39,10 @@ port.on('data', data => {
 // const request = new VersionRequest(protocol).encode()
 // const request = new IdentRequest(protocol).encode()
 // const request = new StatusExRequest(protocol).encode()
-const request = new ActiveBoxesRequest(protocol).encode()
+// const request = new ActiveBoxesRequest(protocol).encode()
 // const request = new SensorStatusRequest(protocol).encode()
 // const request = new RawIMURequest(protocol).encode()
-// const request = new ServoRequest(protocol).encode()
+const request = new ServoRequest(protocol).encode()
 port.write(request, (e) => {
   if (e) {
     console.log('Error writing data:', e)

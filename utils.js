@@ -1,3 +1,9 @@
+export function getObjectPropertyNames(obj) {
+  return Object
+    .getOwnPropertyNames(Object.getPrototypeOf(obj))
+    .filter(prop => typeof obj[prop] !== 'function')
+}
+
 export function getKeyForValue(obj, value) {
   return Object.entries(obj).find(([k, v]) => v === value)
 }
