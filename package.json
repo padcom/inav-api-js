@@ -11,6 +11,7 @@
   "author": "Matthias Hryniszak <padcom@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "glob": "^7.1.6",
     "serialport": "^9.0.7"
   }
 }
