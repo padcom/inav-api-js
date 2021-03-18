@@ -68,8 +68,10 @@ port.on('data', data => {
 // const request = new LoopTimeRequest(protocol).encode()
 // import { ThreeDeeRequest } from './command/3D.js'
 // const request = new ThreeDeeRequest(protocol).encode()
-import { BoxNamesRequest } from './command/BoxNames.js'
-const request = new BoxNamesRequest(protocol).encode()
+// import { BoxNamesRequest } from './command/BoxNames.js'
+// const request = new BoxNamesRequest(protocol).encode()
+import { PidNamesRequest } from './command/PidNames.js'
+const request = new PidNamesRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
