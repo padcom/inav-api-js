@@ -13,6 +13,7 @@ import { ActiveBoxesRequest } from './command/ActiveBoxes.js'
 import { SensorStatusRequest } from './command/SensorStatus.js'
 import { RawIMURequest } from './command/RawIMU.js'
 import { ServoRequest } from './command/Servo.js'
+import { MotorRequest } from './command/Motor.js'
 import { sleep } from './utils.js'
 
 
@@ -35,11 +36,12 @@ port.on('data', data => {
 
 // const request = new VersionRequest(protocol).encode()
 // const request = new IdentRequest(protocol).encode()
-const request = new StatusExRequest(protocol).encode()
+// const request = new StatusExRequest(protocol).encode()
 // const request = new ActiveBoxesRequest(protocol).encode()
 // const request = new SensorStatusRequest(protocol).encode()
 // const request = new RawIMURequest(protocol).encode()
 // const request = new ServoRequest(protocol).encode()
+const request = new MotorRequest(protocol).encode()
 port.write(request, (e) => {
   if (e) {
     console.log('Error writing data:', e)
