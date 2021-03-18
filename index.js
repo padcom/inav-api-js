@@ -47,7 +47,9 @@ port.on('data', data => {
 // const request = new MotorRequest(protocol).encode()
 // const request = new RcChannelRequest(protocol).encode()
 // const request = new RawGPSRequest(protocol).encode()
-const request = new CompGPSRequest(protocol).encode()
+// const request = new CompGPSRequest(protocol).encode()
+import { GPSStatisticsRequest } from './command/GPSStatistics.js'
+const request = new GPSStatisticsRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
