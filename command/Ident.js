@@ -1,8 +1,6 @@
-import { Response } from './Response.js'
-
-function getKeyForValue(obj, value) {
-  return Object.entries(obj).find(([k, v]) => v === value)
-}
+import { Request } from '../Request.js'
+import { Response } from '../Response.js'
+import { getKeyForValue } from '../utils.js'
 
 export const MILTITYPES = {
   TRI:           1,  // Tricopter
@@ -25,6 +23,12 @@ export const MILTITYPES = {
   HELI_90_DEG:   16,
   VTAIL4:        17,
   HEX6H:         18,
+}
+
+export class IdentRequest extends Request {
+  constructor(protocol) {
+    super(protocol, 100)
+  }
 }
 
 export class IdentResponse extends Response {

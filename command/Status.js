@@ -1,4 +1,11 @@
-import { Response } from './Response.js'
+import { Request } from '../Request.js'
+import { Response } from '../Response.js'
+
+export class StatusRequest extends Request {
+  constructor(protocol) {
+    super(protocol, 101)
+  }
+}
 
 export class StatusResponse extends Response {
   get cycleTime() {

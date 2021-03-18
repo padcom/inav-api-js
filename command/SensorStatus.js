@@ -1,4 +1,11 @@
-import { Response } from './Response.js'
+import { Request } from '../Request.js'
+import { Response } from '../Response.js'
+
+export class SensorStatusRequest extends Request {
+  constructor(protocol) {
+    super(protocol, 151)
+  }
+}
 
 export class SensorStatusResponse extends Response {
   get isHardwareHealthy() {

@@ -1,4 +1,11 @@
-import { Response } from './Response.js'
+import { Request } from '../Request.js'
+import { Response } from '../Response.js'
+
+export class RawIMURequest extends Request {
+  constructor(protocol) {
+    super(protocol, 102)
+  }
+}
 
 export class RawIMUResponse extends Response {
   get accelerometer() {

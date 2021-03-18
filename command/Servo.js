@@ -1,4 +1,11 @@
-import { Response } from './Response.js'
+import { Request } from '../Request.js'
+import { Response } from '../Response.js'
+
+export class ServoRequest extends Request {
+  constructor(protocol) {
+    super(protocol, 103)
+  }
+}
 
 export class ServoResponse extends Response {
   get count() {

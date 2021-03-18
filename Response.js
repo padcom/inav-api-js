@@ -1,12 +1,4 @@
-function readonly(object, field, value) {
-  Object.defineProperty(object, field, {
-    get() { return value }
-  })
-}
-
-function hex(n) {
-  return `0x${('00' + n.toString(16)).substr(-2)}`
-}
+import { readonly, hex } from './utils.js'
 
 export class Response {
   constructor(protocol, buffer) {
