@@ -70,8 +70,10 @@ port.on('data', data => {
 // const request = new ThreeDeeRequest(protocol).encode()
 // import { BoxNamesRequest } from './command/BoxNames.js'
 // const request = new BoxNamesRequest(protocol).encode()
-import { PidNamesRequest } from './command/PidNames.js'
-const request = new PidNamesRequest(protocol).encode()
+// import { PidNamesRequest } from './command/PidNames.js'
+// const request = new PidNamesRequest(protocol).encode()
+import { WPRequest } from './command/WP.js'
+const request = new WPRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
