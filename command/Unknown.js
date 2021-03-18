@@ -1,4 +1,4 @@
-import { Response } from '../Response.js'
+import { Response } from '../Response'
 
 export class UnknownResponse extends Response {
 }

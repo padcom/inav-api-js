@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "INAV API",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +10,7 @@
   "author": "Matthias Hryniszak <padcom@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "esm": "^3.2.25",
     "glob": "^7.1.6",
     "serialport": "^9.0.7"
   }

@@ -1,6 +1,6 @@
-import { Request } from '../Request.js'
-import { Response } from '../Response.js'
-import { ServoMixRule } from '../ServoMixRule.js'
+import { Request } from '../Request'
+import { Response } from '../Response'
+import { ServoMixRule } from '../ServoMixRule'
 
 export const MSP_SERVO_MIX_RULES = 241
 
@@ -15,7 +15,7 @@ export class ServoMixRulesResponse extends Response {
     return this.payloadLength / 8
   }
 
-  get motor() {
+  get servoMixRule() {
     const result = []
     for (let i = 0; i < this.count; i++) {
       result.push(new ServoMixRule(
@@ -27,5 +27,9 @@ export class ServoMixRulesResponse extends Response {
       ))
     }
     return result
+  }
+
+  getToStringContent() {
+    return `{\n  count = ${this.count}\n  servoMixRule = [\n    ${this.servoMixRule.join(',\n    ')}\n  ]\n}`
   }
 }

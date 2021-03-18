@@ -1,6 +1,6 @@
 import fs from 'fs'
-import { hex } from './utils.js'
-import { UnknownResponse } from './command/Unknown.js'
+import { hex } from './utils'
+import { UnknownResponse } from './command/Unknown'
 
 export class CommandRegistry {
   #commands = new Map()

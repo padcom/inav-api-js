@@ -1,4 +1,4 @@
-import { getObjectPropertyNames, readonly, hex } from './utils.js'
+import { getObjectPropertyNames, readonly, hex } from './utils'
 
 export class Response {
   constructor(protocol, buffer) {
@@ -17,9 +17,18 @@ export class Response {
     const protocolName = PROTOCOL_TO_STRING[protocol] || 'unknown'
     const command = this.command
     const plLen = this.payloadLength
-    const properties = this.#getToStringContent()
+    const properties = this.getToStringContent()
 
     return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}, payload: ${hex(plLen)} bytes) ${properties}`
+  }
+
+  getToStringContent() {
+    const content = getObjectPropertyNames(this)
+      .map(prop => `  ${prop} = ${this[prop]}`)
+      .join('\n')
+
+    if (content !== '') return `{\n${content}\n}`
+    else return ''
   }
 
   getInt8(offset, ...args) {
@@ -44,14 +53,5 @@ export class Response {
 
   getUint32(offset, ...args) {
     return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
-  }
-
-  #getToStringContent() {
-    const content = getObjectPropertyNames(this)
-      .map(prop => `  ${prop} = ${this[prop]}`)
-      .join('\n')
-
-    if (content !== '') return `{\n${content}\n}`
-    else return ''
   }
 }

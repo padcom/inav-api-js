@@ -1,6 +1,6 @@
-import { Request } from '../Request.js'
-import { Response } from '../Response.js'
-import { getKeyForValue } from '../utils.js'
+import { Request } from '../Request'
+import { Response } from '../Response'
+import { getKeyForValue } from '../utils'
 
 export const MSP_IDENT = 100
 

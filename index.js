@@ -1,16 +1,14 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node -r esm
 
 import SerialPort from 'serialport'
 
-import { PacketProtocol } from './PacketProtocol.js'
-import { PacketProtocolV1 } from './PacketProtocolV1.js'
-import { sleep } from './utils.js'
-
+import { PacketProtocol } from './PacketProtocol'
+import { PacketProtocolV1 } from './PacketProtocolV1'
+import { sleep } from './utils'
+import { CommandRegistry } from './CommandRegistry'
 
 const port = new SerialPort('/dev/ttyACM0', e => { if (e) throw e })
 const protocol = new PacketProtocolV1()
-
-import { CommandRegistry } from './CommandRegistry.js'
 const registry = new CommandRegistry()
 registry.init()
 
@@ -28,46 +26,46 @@ port.on('data', data => {
 // const request = new StatusExRequest(protocol).encode()
 // const request = new ActiveBoxesRequest(protocol).encode()
 // const request = new SensorStatusRequest(protocol).encode()
-import { RawImuRequest } from './command/RawImu.js'
-const request = new RawImuRequest(protocol).encode()
+// import { RawImuRequest } from './command/RawImu'
+// const request = new RawImuRequest(protocol).encode()
 // const request = new ServoRequest(protocol).encode()
 // const request = new MotorRequest(protocol).encode()
 // const request = new RcChannelRequest(protocol).encode()
-// import { RawGpsRequest } from './command/RawGps.js'
+// import { RawGpsRequest } from './command/RawGps'
 // const request = new RawGpsRequest(protocol).encode()
-// import { CompGpsRequest } from './command/CompGps.js'
+// import { CompGpsRequest } from './command/CompGps'
 // const request = new CompGpsRequest(protocol).encode()
-// import { GpsStatisticsRequest } from './command/GpsStatistics.js'
+// import { GpsStatisticsRequest } from './command/GpsStatistics'
 // const request = new GpsStatisticsRequest(protocol).encode()
-// import { AttitudeRequest } from './command/Attitude.js'
+// import { AttitudeRequest } from './command/Attitude'
 // const request = new AttitudeRequest(protocol).encode()
-// import { AltitudeRequest } from './command/Altitude.js'
+// import { AltitudeRequest } from './command/Altitude'
 // const request = new AltitudeRequest(protocol).encode()
-// import { SonarRequest } from './command/Sonar.js'
+// import { SonarRequest } from './command/Sonar'
 // const request = new SonarRequest(protocol).encode()
-// import { AnalogRequest } from './command/Analog.js'
+// import { AnalogRequest } from './command/Analog'
 // const request = new AnalogRequest(protocol).encode()
-// import { RcTuningRequest } from './command/RcTuning.js'
+// import { RcTuningRequest } from './command/RcTuning'
 // const request = new RcTuningRequest(protocol).encode()
-// import { PIDRequest } from './command/PID.js'
+// import { PIDRequest } from './command/PID'
 // const request = new PIDRequest(protocol).encode()
-// import { ArmingConfigRequest } from './command/ArmingConfig.js'
+// import { ArmingConfigRequest } from './command/ArmingConfig'
 // const request = new ArmingConfigRequest(protocol).encode()
-// import { LoopTimeRequest } from './command/LoopTime.js'
+// import { LoopTimeRequest } from './command/LoopTime'
 // const request = new LoopTimeRequest(protocol).encode()
-// import { ThreeDeeRequest } from './command/3D.js'
+// import { ThreeDeeRequest } from './command/3D'
 // const request = new ThreeDeeRequest(protocol).encode()
-// import { BoxNamesRequest } from './command/BoxNames.js'
+// import { BoxNamesRequest } from './command/BoxNames'
 // const request = new BoxNamesRequest(protocol).encode()
-// import { PidNamesRequest } from './command/PidNames.js'
+// import { PidNamesRequest } from './command/PidNames'
 // const request = new PidNamesRequest(protocol).encode()
-// import { WPRequest } from './command/WP.js'
+// import { WPRequest } from './command/WP'
 // const request = new WPRequest(protocol).encode()
-// import { BoxIDsRequest } from './command/BoxIDs.js'
+// import { BoxIDsRequest } from './command/BoxIDs'
 // const request = new BoxIDsRequest(protocol).encode()
-// import { ServoMixRulesRequest } from './command/ServoMixRules.js'
-// const request = new ServoMixRulesRequest(protocol).encode()
-// import { RxConfigRequest } from './command/RxConfig.js'
+import { ServoMixRulesRequest } from './command/ServoMixRules'
+const request = new ServoMixRulesRequest(protocol).encode()
+// import { RxConfigRequest } from './command/RxConfig'
 // const request = new RxConfigRequest(protocol).encode()
 
 port.write(request, (e) => {

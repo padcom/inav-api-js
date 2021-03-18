@@ -1,5 +1,5 @@
-import { Request } from '../Request.js'
-import { Response } from '../Response.js'
+import { Request } from '../Request'
+import { Response } from '../Response'
 
 export const MSP_SERVO = 103
 

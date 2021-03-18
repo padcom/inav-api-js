@@ -1,4 +1,4 @@
-import { Request } from '../Request.js'
+import { Request } from '../Request'
 
 export const MSP_ACTIVEBOXES = 113
 

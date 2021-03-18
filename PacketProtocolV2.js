@@ -1,4 +1,4 @@
-import { PacketProtocol, symbols } from './PacketProtocol.js'
+import { PacketProtocol, symbols } from './PacketProtocol'
 
 export class PacketProtocolV2 extends PacketProtocol {
   encode(code, data) {
