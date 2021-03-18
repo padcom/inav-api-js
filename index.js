@@ -54,8 +54,10 @@ port.on('data', data => {
 // const request = new AttitudeRequest(protocol).encode()
 // import { AltitudeRequest } from './command/Altitude.js'
 // const request = new AltitudeRequest(protocol).encode()
-import { SonarRequest } from './command/Sonar.js'
-const request = new SonarRequest(protocol).encode()
+// import { SonarRequest } from './command/Sonar.js'
+// const request = new SonarRequest(protocol).encode()
+import { AnalogRequest } from './command/Analog.js'
+const request = new AnalogRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
