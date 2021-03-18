@@ -15,6 +15,7 @@ import { RawIMURequest } from './command/RawIMU.js'
 import { ServoRequest } from './command/Servo.js'
 import { MotorRequest } from './command/Motor.js'
 import { RcChannelRequest } from './command/RcChannel.js'
+import { RawGPSRequest } from './command/RawGPS.js'
 import { sleep } from './utils.js'
 
 
@@ -43,7 +44,8 @@ port.on('data', data => {
 // const request = new RawIMURequest(protocol).encode()
 // const request = new ServoRequest(protocol).encode()
 // const request = new MotorRequest(protocol).encode()
-const request = new RcChannelRequest(protocol).encode()
+// const request = new RcChannelRequest(protocol).encode()
+const request = new RawGPSRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
