@@ -17,9 +17,10 @@ export class MSPv1 extends MSP {
     const command = this.#getCommand(buffer)
     const payload = this.#getPayload(buffer)
     const crc = this.#getCRC(buffer)
+    const calculatedCRC = this.#checksum(buffer)
 
-    if (this.#checksum(buffer) !== crc) {
-      throw new Error('Invalid CRC')
+    if (crc !== calculatedCRC) {
+      throw new Error(`Invalid CRC: got ${hex(crc)} expected ${hex(calculatedCRC)}`)
     }
 
     return {
