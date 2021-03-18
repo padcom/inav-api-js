@@ -44,3 +44,21 @@ export class MSPv2 extends MSP {
 }
 
 readonly(MSPv2, 'PROTOCOL_ID', 'X'.charCodeAt(0))
+
+MSPv2.decodeCommandCode = function(buffer) {
+  if (buffer instanceof Buffer) return buffer[4]
+  else if (buffer instanceof DataView) return buffer.getUint8(4)
+  else throw new Error('Don\'t know how to fetch command code from', buffer.prototype)
+}
+
+MSPv2.decodePayloadOffset = function(buffer) {
+  throw new Error('Not implemented')
+}
+
+MSPv2.decodePayloadLength = function(buffer) {
+  throw new Error('Not implemented')
+}
+
+MSPv2.decodeExpectedPacketLength = function(buffer) {
+  return MSPv2.decodePayloadLength(buffer) + MSPv2.decodePayloadOffset(buffer) + 1
+}

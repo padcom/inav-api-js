@@ -64,17 +64,16 @@ export class MSPv1 extends MSP {
     return new DataView(new Uint8Array(buffer).buffer)
   }
 
+  #getPayloadOffset(buffer) {
+    return MSPv1.decodePayloadOffset(buffer)
+  }
+
   #getPayloadLength(buffer) {
-    if (buffer[3] !== 0xFF) {
-      return buffer[3]
-    } else {
-      return buffer[5] | (buffer[6] << 8)
-    }
+    return MSPv1.decodePayloadLength(buffer)
   }
 
   #getPayload(buffer) {
-    const payloadOffset = buffer[3] === 0xFF ? 7 : 5
-    return new DataView(new Uint8Array(buffer).buffer, payloadOffset, this.#getPayloadLength(buffer))
+    return new DataView(new Uint8Array(buffer).buffer, this.#getPayloadOffset(buffer), this.#getPayloadLength(buffer))
   }
 
   #getCRC(buffer) {
@@ -92,3 +91,25 @@ export class MSPv1 extends MSP {
 }
 
 readonly(MSPv1, 'PROTOCOL_ID', 'M'.charCodeAt(0))
+
+MSPv1.decodeCommandCode = function(buffer) {
+  if (buffer instanceof Buffer) return buffer[4]
+  else if (buffer instanceof DataView) return buffer.getUint8(4)
+  else throw new Error('Don\'t know how to fetch command code from', buffer.prototype)
+}
+
+MSPv1.decodePayloadOffset = function(buffer) {
+  return buffer[3] === 0xFF ? 7 : 5
+  }
+
+MSPv1.decodePayloadLength = function(buffer) {
+  if (buffer[3] !== 0xFF) {
+    return buffer[3]
+  } else {
+    return buffer[5] | (buffer[6] << 8)
+  }
+}
+
+MSPv1.decodeExpectedPacketLength = function(buffer) {
+  return MSPv1.decodePayloadLength(buffer) + MSPv1.decodePayloadOffset(buffer) + 1
+}
