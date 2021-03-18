@@ -58,8 +58,10 @@ port.on('data', data => {
 // const request = new SonarRequest(protocol).encode()
 // import { AnalogRequest } from './command/Analog.js'
 // const request = new AnalogRequest(protocol).encode()
-import { RCTuningRequest } from './command/RCTuning.js'
-const request = new RCTuningRequest(protocol).encode()
+// import { RCTuningRequest } from './command/RCTuning.js'
+// const request = new RCTuningRequest(protocol).encode()
+import { PIDRequest } from './command/PID.js'
+const request = new PIDRequest(protocol).encode()
 
 port.write(request, (e) => {
   if (e) {
