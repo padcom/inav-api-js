@@ -3,7 +3,7 @@ import { PacketEncoderTransform } from './PacketEncoderTransform'
 import { PacketDecoderTransform } from './PacketDecoderTransform'
 
 export async function mspSend(port, request, protocol, debug = false) {
-  if (debug) console.log('[MSP]', request)
+  if (debug) console.log('[MSP] >', request)
 
   return new Promise((resolve, reject) => {
     const writter = new PassThrough({ readableObjectMode: true, writableObjectMode: true })
@@ -24,7 +24,7 @@ export async function mspSend(port, request, protocol, debug = false) {
   })
 }
 
-export async function mspReceive(port, commandRegistry, timeout = 1, debug = false) {
+export async function mspReceive(port, commandRegistry, timeout = 100, debug = false) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       cleanup()
@@ -39,6 +39,7 @@ export async function mspReceive(port, commandRegistry, timeout = 1, debug = fal
     const readStream = port.pipe(packetDecoder)
 
     function handler(response) {
+      if (debug) console.log('[MSP] <', response)
       cleanup()
       resolve(response)
     }
@@ -47,22 +48,27 @@ export async function mspReceive(port, commandRegistry, timeout = 1, debug = fal
   })
 }
 
-async function mspQuery(port, request, protocol, commandRegistry, timeout = 1, debug = false) {
-  if (debug) console.log('[MSP]', request)
+async function mspQuery(port, request, protocol, commandRegistry, timeout = 100, debug = false) {
+  const timer = setTimeout(cleanup, timeout)
 
-  const results = await Promise.all([
-    mspReceive(port, commandRegistry, timeout, debug).then(response => {
-      if (response.command === request.command) {
-        return response
-      } else {
-        if (debug) console.log(`[MSP] Invalid response received; expected ${request.command}, got ${response.command}`)
-        return null
-      }
-    }),
-    mspSend(port, request, protocol, debug)
-  ])
+  let waitingForResponse = true
 
-  return results[0]
+  function cleanup() {
+    waitingForResponse = false
+    clearTimeout(timer)
+  }
+
+  // not using await here to immediately start listening for incoming messages
+  mspSend(port, request, protocol, debug)
+  while (waitingForResponse) {
+    const response = await mspReceive(port, commandRegistry, timeout, debug)
+    if (response.command === request.command) {
+      cleanup()
+      return response
+    }
+  }
+
+  throw new Error('Timeout')
 }
 
 function mspQueryWithRetry(count) {
