@@ -14,7 +14,7 @@ export class BoxIDsResponse extends Response {
     return this.payload.byteLength
   }
 
-  get motor() {
+  get box() {
     const result = []
     for (let i = 0; i < this.count; i++) {
       result.push(this.getUint8(i, true))

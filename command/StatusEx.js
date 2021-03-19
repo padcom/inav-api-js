@@ -26,7 +26,7 @@ export class StatusExResponse extends Response {
     return this.getUint8(10)
   }
 
-  get cpuload() {
+  get cpuLoad() {
     return this.getUint16(11, true)
   }
 

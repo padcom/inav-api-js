@@ -14,7 +14,7 @@ export class AnalogResponse extends Response {
     return this.getUint8(0) / 10.0 // V
   }
 
-  get mAhdrawn() {
+  get mAhDrawn() {
     return this.getUint16(1, true) // mAh
   }
 

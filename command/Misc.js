@@ -10,7 +10,7 @@ export class MiscRequest extends Request {
 }
 
 export class MiscResponse extends Response {
-  get midrc() {
+  get midRc() {
     return this.getInt16(0, true)
   }
 
