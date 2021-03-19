@@ -46,7 +46,7 @@ export class MSPv2 extends MSP {
     view[6] = payloadLength & 0xFF // payloadLength lower byte
     view[7] = (payloadLength & 0xFF00) >> 8 // payloadLength upper byte
     for (let i = 0; i < payloadLength; i++) {
-      view[this.#getPayloadOffset() + i] = payload[i]
+      view[MSPv2.decodePayloadOffset() + i] = payload[i]
     }
     view[length - 1] = this.#checksum(command, 0, payload)
 
@@ -95,16 +95,8 @@ export class MSPv2 extends MSP {
     return new DataView(new Uint8Array(buffer).buffer)
   }
 
-  #getPayloadOffset(buffer) {
-    return MSPv2.decodePayloadOffset(buffer)
-  }
-
-  #getPayloadLength(buffer) {
-    return MSPv2.decodePayloadLength(buffer)
-  }
-
   #getPayload(buffer) {
-    return new DataView(new Uint8Array(buffer).buffer, this.#getPayloadOffset(buffer), this.#getPayloadLength(buffer))
+    return new DataView(new Uint8Array(buffer).buffer, MSPv2.decodePayloadOffset(buffer), MSPv2.decodePayloadLength(buffer))
   }
 
   #getCRC(buffer) {
@@ -128,5 +120,5 @@ MSPv2.decodePayloadLength = function(buffer) {
 }
 
 MSPv2.decodeExpectedPacketLength = function(buffer) {
-  return MSPv2.decodePayloadLength(buffer) + MSPv2.decodePayloadOffset(buffer) + 1
+  return MSPv2.decodePayloadLength(buffer) + MSPv2.decodePayloadOffset(buffer) + 1 // crc at the end
 }

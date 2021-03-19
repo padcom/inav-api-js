@@ -62,16 +62,8 @@ export class MSPv1 extends MSP {
     return new DataView(new Uint8Array(buffer).buffer)
   }
 
-  #getPayloadOffset(buffer) {
-    return MSPv1.decodePayloadOffset(buffer)
-  }
-
-  #getPayloadLength(buffer) {
-    return MSPv1.decodePayloadLength(buffer)
-  }
-
   #getPayload(buffer) {
-    return new DataView(new Uint8Array(buffer).buffer, this.#getPayloadOffset(buffer), this.#getPayloadLength(buffer))
+    return new DataView(new Uint8Array(buffer).buffer, MSPv1.decodePayloadOffset(buffer), MSPv1.decodePayloadLength(buffer))
   }
 
   #getCRC(buffer) {
@@ -108,5 +100,5 @@ MSPv1.decodePayloadLength = function(buffer) {
 }
 
 MSPv1.decodeExpectedPacketLength = function(buffer) {
-  return MSPv1.decodePayloadLength(buffer) + MSPv1.decodePayloadOffset(buffer) + 1
+  return MSPv1.decodePayloadLength(buffer) + MSPv1.decodePayloadOffset(buffer) + 1 // crc at the end
 }
