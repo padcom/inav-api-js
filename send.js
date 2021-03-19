@@ -32,11 +32,12 @@ export async function mspReceive(port, commandRegistry, timeout = 100, debug = f
     }, timeout)
 
     function cleanup() {
+      packetDecoder.off('data', handler)
+      port.unpipe(packetDecoder)
       clearTimeout(timer)
     }
 
-    const packetDecoder = new PacketDecoderTransform(commandRegistry)
-    const readStream = port.pipe(packetDecoder)
+    const packetDecoder = port.pipe(new PacketDecoderTransform(commandRegistry))
 
     function handler(response) {
       if (debug) console.log('[MSP] <', response)
@@ -44,7 +45,7 @@ export async function mspReceive(port, commandRegistry, timeout = 100, debug = f
       resolve(response)
     }
 
-    readStream.on('data', handler)
+    packetDecoder.on('data', handler)
   })
 }
 
