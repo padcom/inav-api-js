@@ -5,7 +5,7 @@ import { MSPv1 } from './MSPv1'
 import { MSPv2 } from './MSPv2'
 import { CommandRegistry } from './CommandRegistry'
 import { PacketDecoderTransform } from './PacketDecoderTransform'
-import { send as sendAndWaitForResponse } from './send'
+import { sendAndWaitForResponse } from './communication'
 
 import { VersionRequest } from './command/Version'
 import { IdentRequest } from './command/Ident'

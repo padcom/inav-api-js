@@ -86,4 +86,4 @@ function mspQueryWithRetry(count) {
   }
 }
 
-export const send = mspQueryWithRetry(3)
+export const sendAndWaitForResponse = mspQueryWithRetry(3)
