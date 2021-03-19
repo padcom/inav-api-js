@@ -1,6 +1,7 @@
 import { PassThrough } from 'stream'
-import { PacketEncoderTransform } from './PacketEncoderTransform'
+import { BufferedPacketReaderTransform } from './BufferedPacketReaderTransform'
 import { PacketDecoderTransform } from './PacketDecoderTransform'
+import { PacketEncoderTransform } from './PacketEncoderTransform'
 
 export async function mspSend(port, request, protocol, debug = false) {
   if (debug) console.log('[MSP] >', request)
@@ -37,7 +38,9 @@ export async function mspReceive(port, commandRegistry, timeout = 100, debug = f
       clearTimeout(timer)
     }
 
-    const packetDecoder = port.pipe(new PacketDecoderTransform(commandRegistry))
+    const packetDecoder = port
+      .pipe(new BufferedPacketReaderTransform())
+      .pipe(new PacketDecoderTransform(commandRegistry))
 
     function handler(response) {
       if (debug) console.log('[MSP] <', response)
