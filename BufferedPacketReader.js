@@ -11,7 +11,7 @@ const PROTOCOL_CLASSES = {
 const STATE_START = 0
 const STATE_CONTINUE_READING_DATA = 1
 
-export class BufferedPacketReaderTransform extends Transform {
+export class BufferedPacketReader extends Transform {
   #state = STATE_START
   #buffer = null
   #ProtocolClass = null

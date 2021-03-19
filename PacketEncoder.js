@@ -1,7 +1,7 @@
 import { Transform } from 'stream'
 import { MSP } from './MSP'
 
-export class PacketEncoderTransform extends Transform {
+export class PacketEncoder extends Transform {
   #protocol = null
 
   constructor(protocol, options = {}) {

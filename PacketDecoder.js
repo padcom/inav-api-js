@@ -8,7 +8,7 @@ const PROTOCOL_CLASSES = {
   [MSPv2.PROTOCOL_ID]: MSPv2
 }
 
-export class PacketDecoderTransform extends Transform {
+export class PacketDecoder extends Transform {
   #commandRegistry = null
 
   constructor(commandRegistry, options) {

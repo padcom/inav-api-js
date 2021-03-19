@@ -1,14 +1,14 @@
 import { PassThrough } from 'stream'
-import { BufferedPacketReaderTransform } from './BufferedPacketReaderTransform'
-import { PacketDecoderTransform } from './PacketDecoderTransform'
-import { PacketEncoderTransform } from './PacketEncoderTransform'
+import { BufferedPacketReader } from './BufferedPacketReader'
+import { PacketDecoder } from './PacketDecoder'
+import { PacketEncoder } from './PacketEncoder'
 
 export async function mspSend(port, request, protocol, debug = false) {
   if (debug) console.log('[MSP] >', request)
 
   return new Promise((resolve, reject) => {
     const writter = new PassThrough({ readableObjectMode: true, writableObjectMode: true })
-    const packetEncoder = new PacketEncoderTransform(protocol)
+    const packetEncoder = new PacketEncoder(protocol)
     writter.pipe(packetEncoder).pipe(port)
     writter.write(request, e => {
       if (e) {
@@ -39,8 +39,8 @@ export async function mspReceive(port, commandRegistry, timeout = 100, debug = f
     }
 
     const packetDecoder = port
-      .pipe(new BufferedPacketReaderTransform())
-      .pipe(new PacketDecoderTransform(commandRegistry))
+      .pipe(new BufferedPacketReader())
+      .pipe(new PacketDecoder(commandRegistry))
 
     function handler(response) {
       if (debug) console.log('[MSP] <', response)

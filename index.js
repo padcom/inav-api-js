@@ -4,8 +4,8 @@ import SerialPort from 'serialport'
 import { MSPv1 } from './MSPv1'
 import { MSPv2 } from './MSPv2'
 import { CommandRegistry } from './CommandRegistry'
-import { BufferedPacketReaderTransform } from './BufferedPacketReaderTransform'
-import { PacketDecoderTransform } from './PacketDecoderTransform'
+import { BufferedPacketReader } from './BufferedPacketReader'
+import { PacketDecoder } from './PacketDecoder'
 import { sendAndWaitForResponse } from './communication'
 
 import { VersionRequest } from './command/Version'
@@ -42,8 +42,8 @@ await registry.init()
 const port = new SerialPort('/dev/ttyACM0')
 
 const decodedPackages = port
-  .pipe(new BufferedPacketReaderTransform())
-  .pipe(new PacketDecoderTransform(registry))
+  .pipe(new BufferedPacketReader())
+  .pipe(new PacketDecoder(registry))
 
 decodedPackages.on('data', response => {
   console.log('[MAIN] Received package', response.toString())
