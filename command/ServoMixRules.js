@@ -1,6 +1,6 @@
 import { Request } from '../Request'
 import { Response } from '../Response'
-import { ServoMixRule } from '../ServoMixRule'
+import { ServoMixRule } from '../model/ServoMixRule'
 
 export const MSP_SERVO_MIX_RULES = 241
 

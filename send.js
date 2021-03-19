@@ -1,110 +1,76 @@
-import { MSP } from './MSP'
-import { MSPv1 } from './MSPv1'
-import { MSPv2 } from './MSPv2'
-import { CommandRegistry } from './CommandRegistry'
+import { PassThrough } from 'stream'
+import { PacketEncoderTransform } from './PacketEncoderTransform'
+import { PacketDecoderTransform } from './PacketDecoderTransform'
 
-const PROTOCOL_CLASSES = {
-  [MSPv1.PROTOCOL_ID]: MSPv1,
-  [MSPv2.PROTOCOL_ID]: MSPv2
-}
-
-const registry = new CommandRegistry()
-registry.init()
-
-async function mspQuery(port, request, protocol, timeout = 100, debug = false) {
+export async function mspSend(port, request, protocol, debug = false) {
   if (debug) console.log('[MSP]', request)
 
   return new Promise((resolve, reject) => {
-    const t1 = new Date().getTime()
-    const wait = setInterval(() => {
-      const t2 = new Date().getTime()
-      if (t2 - t1 > timeout) {
-        clearInterval(wait)
-        reject(new Error('Timeout'))
-      }
-    }, timeout / 10)
-
-    const STATE_START = 0
-    const STATE_CONTINUE_READING_DATA = 1
-
-    let state = STATE_START
-    let buffer = null
-    let ProtocolClass = null
-
-    function handler(data) {
-      if (debug) console.log('[MSP] <', data)
-
-      function start() {
-        buffer = data
-
-        if (MSP.decodeStartCode(buffer) !== MSP.START_BYTE) {
-          if (debug) console.log('[MSP] Buffer does not contain packet - ignoring')
-          return
-        }
-
-        ProtocolClass = PROTOCOL_CLASSES[MSP.decodeProtocolCode(buffer)]
-
-        if (!ProtocolClass) {
-          if (debug) console.log(`[MSP] Unknown protocol (${MSP.decodeProtocolCode(buffer)}) - ignoring`)
-          return
-        }
-
-        if (ProtocolClass.decodeExpectedPacketLength(buffer) === buffer.length) {
-          done()
-        } else {
-          state = STATE_CONTINUE_READING_DATA
-        }
-      }
-
-      function more() {
-        buffer = Buffer.concat([ buffer, data ])
-        if (ProtocolClass.decodeExpectedPacketLength(buffer) === buffer.length) {
-          done()
-        }
-      }
-  
-      function done() {
-        const command = ProtocolClass.decodeCommandCode(buffer)
-        if (command === request.command) {
-          port.off('data', handler)
-          clearInterval(wait)
-          const ResponseClass = registry.getCommandByCode(command).response
-          const protocol = new ProtocolClass()
-          resolve(new ResponseClass(protocol, buffer))
-        }
-      }
-
-      switch (state) {
-        case STATE_START: {
-          start()
-          break
-        }
-        case STATE_CONTINUE_READING_DATA: {
-          more()
-          break          
-        }
-      }
-    }
-
-    port.on('data', handler)
-
-    const command = protocol.encode(MSP.DIRECTION_TO_MSC, request.command, request.payload)
-    port.write(command, e => {
+    const writter = new PassThrough({ readableObjectMode: true, writableObjectMode: true })
+    const packetEncoder = new PacketEncoderTransform(protocol)
+    writter.pipe(packetEncoder).pipe(port)
+    writter.write(request, e => {
       if (e) {
         reject(e)
       } else {
-        if (debug) console.log('[MSP] >', command)
+        if (debug) console.log('[MSP] >', request)
+        packetEncoder.unpipe(port)
+        writter.unpipe(packetEncoder)
+        packetEncoder.end()
+        writter.end()
+        resolve(true)
       }
     })
   })
 }
 
+export async function mspReceive(port, commandRegistry, timeout = 1, debug = false) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      cleanup()
+      reject(new Error('Timeout'))
+    }, timeout)
+
+    function cleanup() {
+      clearTimeout(timer)
+    }
+
+    const packetDecoder = new PacketDecoderTransform(commandRegistry)
+    const readStream = port.pipe(packetDecoder)
+
+    function handler(response) {
+      cleanup()
+      resolve(response)
+    }
+
+    readStream.on('data', handler)
+  })
+}
+
+async function mspQuery(port, request, protocol, commandRegistry, timeout = 1, debug = false) {
+  if (debug) console.log('[MSP]', request)
+
+  const results = await Promise.all([
+    mspReceive(port, commandRegistry, timeout, debug).then(response => {
+      if (response.command === request.command) {
+        return response
+      } else {
+        if (debug) console.log(`[MSP] Invalid response received; expected ${request.command}, got ${response.command}`)
+        return null
+      }
+    }),
+    mspSend(port, request, protocol, debug)
+  ])
+
+  return results[0]
+}
+
 function mspQueryWithRetry(count) {
-  return async (port, request, protocol, timeout = 100, debug = false) => {
+  return async (port, request, protocol, commandRegistry, timeout = 100, debug = false) => {
     let counter = count
     while (counter > 0) {
       try {
-        return await mspQuery(port, request, protocol, timeout, debug)
+        return await mspQuery(port, request, protocol, commandRegistry, timeout, debug)
       } catch (e) {
         if (--counter === 0) throw e
         console.log('[MSP] Retrying', count - counter)
