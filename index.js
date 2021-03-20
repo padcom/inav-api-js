@@ -17,6 +17,7 @@ import { IdentRequest } from './command/Ident'
 import { StatusExRequest } from './command/StatusEx'
 import { ActiveBoxesRequest } from './command/ActiveBoxes'
 import { SensorStatusRequest } from './command/SensorStatus'
+import { SensorConfigRequest } from './command/SensorConfig'
 import { RawImuRequest } from './command/RawImu'
 import { ServoRequest } from './command/Servo'
 import { MotorRequest } from './command/Motor'
@@ -62,11 +63,12 @@ async function test(protocol) {
   // await sendTestRequest(new NameRequest(), protocol)
   // await sendTestRequest(new FcVariantRequest(), protocol)
   // await sendTestRequest(new FcVersionRequest(), protocol)
-  await sendTestRequest(new BuildInfoRequest(), protocol)
+  // await sendTestRequest(new BuildInfoRequest(), protocol)
   // await sendTestRequest(new IdentRequest(), protocol)
   // await sendTestRequest(new StatusExRequest(), protocol)
   // await sendTestRequest(new ActiveBoxesRequest(), protocol)
   // await sendTestRequest(new SensorStatusRequest(), protocol)
+  await sendTestRequest(new SensorConfigRequest(), protocol)
   // await sendTestRequest(new RawImuRequest(), protocol)
   // await sendTestRequest(new ServoRequest(), protocol)
   // await sendTestRequest(new MotorRequest(), protocol)
