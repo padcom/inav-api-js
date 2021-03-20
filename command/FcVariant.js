@@ -10,7 +10,7 @@ export class FcVariantRequest extends Request {
 }
 
 export class FcVariantResponse extends Response {
-  get identifier() {
+  get variant() {
     return this.getString(0, 4)
   }
 }
