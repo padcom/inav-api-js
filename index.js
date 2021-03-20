@@ -46,6 +46,7 @@ import { PositionEstimationConfigRequest } from './command/PositionEstimationCon
 import { RthAndLandConfigRequest } from './command/RthAndLandConfig'
 import { ChannelForwardingRequest } from './command/ChannelForwarding'
 import { ModeRangesRequest } from './command/ModeRanges'
+import { LedColorsRequest } from './command/LedColors'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -102,7 +103,8 @@ async function test(protocol) {
   // await sendTestRequest(new PositionEstimationConfigRequest(), protocol)
   // await sendTestRequest(new RthAndLandConfigRequest(), protocol)
   // await sendTestRequest(new ChannelForwardingRequest(), protocol)
-  await sendTestRequest(new ModeRangesRequest(), protocol)
+  // await sendTestRequest(new ModeRangesRequest(), protocol)
+  await sendTestRequest(new LedColorsRequest(), protocol)
 }
 
 async function loop() {
