@@ -27,3 +27,7 @@ export function hex(n) {
 export function sleep(ms) {
   return new Promise(resolve => { setTimeout(resolve, ms) })
 }
+
+export function bitCheck(num, bit) {
+  return (num >> bit) % 2 != 0
+}

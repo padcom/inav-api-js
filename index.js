@@ -48,7 +48,7 @@ import { ChannelForwardingRequest } from './command/ChannelForwarding'
 import { ModeRangesRequest } from './command/ModeRanges'
 import { LedColorsRequest } from './command/LedColors'
 import { AdjustmentRangesRequest } from './command/AdjustmentRanges'
-
+import { CfSerialConfigRequest } from './command/CfSerialConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -107,7 +107,8 @@ async function test(protocol) {
   // await sendTestRequest(new ChannelForwardingRequest(), protocol)
   // await sendTestRequest(new ModeRangesRequest(), protocol)
   // await sendTestRequest(new LedColorsRequest(), protocol)
-  await sendTestRequest(new AdjustmentRangesRequest(), protocol)
+  // await sendTestRequest(new AdjustmentRangesRequest(), protocol)
+  await sendTestRequest(new CfSerialConfigRequest(), protocol)
 }
 
 async function loop() {
