@@ -10,6 +10,7 @@ import { sendAndWaitForResponse } from './communication'
 
 import { VersionRequest } from './command/Version'
 import { NameRequest } from './command/Name'
+import { FcVariantRequest } from './command/FcVariant'
 import { IdentRequest } from './command/Ident'
 import { StatusExRequest } from './command/StatusEx'
 import { ActiveBoxesRequest } from './command/ActiveBoxes'
@@ -55,8 +56,9 @@ async function sendTestRequest(request, protocol) {
 }
 
 async function test(protocol) {
-  await sendTestRequest(new NameRequest(), protocol)
   // await sendTestRequest(new VersionRequest(), protocol)
+  // await sendTestRequest(new NameRequest(), protocol)
+  await sendTestRequest(new FcVariantRequest(), protocol)
   // await sendTestRequest(new IdentRequest(), protocol)
   // await sendTestRequest(new StatusExRequest(), protocol)
   // await sendTestRequest(new ActiveBoxesRequest(), protocol)
@@ -99,4 +101,4 @@ async function main() {
   port.close()
 }
 
-await loop()
+await main()

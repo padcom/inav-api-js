@@ -10,7 +10,11 @@ export class VersionRequest extends Request {
 }
 
 export class VersionResponse extends Response {
-  get version() {
-    return `${this.getUint8(0)}.${this.getUint8(1)}.0`
+  get msp() {
+    return `${this.getUint8(0)}`
+  }
+
+  get api() {
+    return `${this.getUint8(1)}.${this.getUint8(2)}.0`
   }
 }

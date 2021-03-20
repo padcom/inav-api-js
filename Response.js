@@ -51,9 +51,10 @@ export class Response {
     return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
   }
 
-  getString(offset) {
+  getString(offset, maxLength = this.payload.byteLength) {
+    console.log('maxLength', maxLength)
     let result = ''
-    for (let i = 0; i < this.payload.byteLength; i++) {
+    for (let i = 0; i < maxLength; i++) {
       const char = this.payload.getUint8(i)
       if (!char) break
       result += String.fromCharCode(char)
