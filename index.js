@@ -44,6 +44,7 @@ import { NavPosHoldRequest } from './command/NavPosHold'
 import { CalibrationDataRequest } from './command/CalibrationData'
 import { PositionEstimationConfigRequest } from './command/PositionEstimationConfig'
 import { RthAndLandConfigRequest } from './command/RthAndLandConfig'
+import { ChannelForwardingRequest } from './command/ChannelForwarding'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -99,6 +100,7 @@ async function test(protocol) {
   await sendTestRequest(new CalibrationDataRequest(), protocol)
   await sendTestRequest(new PositionEstimationConfigRequest(), protocol)
   await sendTestRequest(new RthAndLandConfigRequest(), protocol)
+  await sendTestRequest(new ChannelForwardingRequest(), protocol)
 }
 
 async function loop() {
