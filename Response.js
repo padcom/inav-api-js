@@ -20,7 +20,7 @@ export class Response {
 
   getToStringContent() {
     const content = getObjectPropertyNames(this)
-      .map(prop => `  ${prop} = ${this[prop]}`)
+      .map(prop => `  ${prop} = ${JSON.stringify(this[prop])}`)
       .join('\n')
 
     if (content !== '') return `{\n${content}\n}`
