@@ -12,6 +12,7 @@ import { VersionRequest } from './command/Version'
 import { NameRequest } from './command/Name'
 import { FcVariantRequest } from './command/FcVariant'
 import { FcVersionRequest } from './command/FcVersion'
+import { BuildInfoRequest } from './command/BuildInfo'
 import { IdentRequest } from './command/Ident'
 import { StatusExRequest } from './command/StatusEx'
 import { ActiveBoxesRequest } from './command/ActiveBoxes'
@@ -60,7 +61,8 @@ async function test(protocol) {
   // await sendTestRequest(new VersionRequest(), protocol)
   // await sendTestRequest(new NameRequest(), protocol)
   // await sendTestRequest(new FcVariantRequest(), protocol)
-  await sendTestRequest(new FcVersionRequest(), protocol)
+  // await sendTestRequest(new FcVersionRequest(), protocol)
+  await sendTestRequest(new BuildInfoRequest(), protocol)
   // await sendTestRequest(new IdentRequest(), protocol)
   // await sendTestRequest(new StatusExRequest(), protocol)
   // await sendTestRequest(new ActiveBoxesRequest(), protocol)

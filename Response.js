@@ -52,9 +52,9 @@ export class Response {
   }
 
   getString(offset, maxLength = this.payload.byteLength) {
-    console.log('maxLength', maxLength)
+    const last = Math.min(offset + maxLength, this.payload.byteLength)
     let result = ''
-    for (let i = 0; i < maxLength; i++) {
+    for (let i = offset; i < last; i++) {
       const char = this.payload.getUint8(i)
       if (!char) break
       result += String.fromCharCode(char)
