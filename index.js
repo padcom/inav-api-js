@@ -50,6 +50,7 @@ import { LedColorsRequest } from './command/LedColors'
 import { AdjustmentRangesRequest } from './command/AdjustmentRanges'
 import { CfSerialConfigRequest } from './command/CfSerialConfig'
 import { DataFlashSummaryRequest } from './command/DataFlashSummary'
+import { FailsafeConfigRequest } from './command/FailsafeConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -110,7 +111,8 @@ async function test(protocol) {
   // await sendTestRequest(new LedColorsRequest(), protocol)
   // await sendTestRequest(new AdjustmentRangesRequest(), protocol)
   // await sendTestRequest(new CfSerialConfigRequest(), protocol)
-  await sendTestRequest(new DataFlashSummaryRequest(), protocol)
+  // await sendTestRequest(new DataFlashSummaryRequest(), protocol)
+  await sendTestRequest(new FailsafeConfigRequest(), protocol)
 }
 
 async function loop() {
