@@ -40,6 +40,7 @@ import { WPRequest } from './command/WP'
 import { BoxIDsRequest } from './command/BoxIDs'
 import { ServoMixRulesRequest } from './command/ServoMixRules'
 import { RxConfigRequest } from './command/RxConfig'
+import { NavPosHoldRequest } from './command/NavPosHold'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -68,7 +69,7 @@ async function test(protocol) {
   // await sendTestRequest(new StatusExRequest(), protocol)
   // await sendTestRequest(new ActiveBoxesRequest(), protocol)
   // await sendTestRequest(new SensorStatusRequest(), protocol)
-  await sendTestRequest(new SensorConfigRequest(), protocol)
+  // await sendTestRequest(new SensorConfigRequest(), protocol)
   // await sendTestRequest(new RawImuRequest(), protocol)
   // await sendTestRequest(new ServoRequest(), protocol)
   // await sendTestRequest(new MotorRequest(), protocol)
@@ -91,6 +92,7 @@ async function test(protocol) {
   // await sendTestRequest(new BoxIDsRequest(), protocol)
   // await sendTestRequest(new ServoMixRulesRequest(), protocol)
   // await sendTestRequest(new RxConfigRequest(), protocol)
+  await sendTestRequest(new NavPosHoldRequest(), protocol)
 }
 
 async function loop() {
