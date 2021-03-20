@@ -9,6 +9,7 @@ import { PacketDecoder } from './PacketDecoder'
 import { sendAndWaitForResponse } from './communication'
 
 import { VersionRequest } from './command/Version'
+import { NameRequest } from './command/Name'
 import { IdentRequest } from './command/Ident'
 import { StatusExRequest } from './command/StatusEx'
 import { ActiveBoxesRequest } from './command/ActiveBoxes'
@@ -46,7 +47,7 @@ const decodedPackages = port
   .pipe(new PacketDecoder(registry))
 
 decodedPackages.on('data', response => {
-  console.log('[MAIN] Received package', response.toString())
+  console.log('[MAIN]', response.toString())
 })
 
 async function sendTestRequest(request, protocol) {
@@ -54,33 +55,34 @@ async function sendTestRequest(request, protocol) {
 }
 
 async function test(protocol) {
-  await sendTestRequest(new VersionRequest(), protocol)
-  await sendTestRequest(new IdentRequest(), protocol)
-  await sendTestRequest(new StatusExRequest(), protocol)
-  await sendTestRequest(new ActiveBoxesRequest(), protocol)
-  await sendTestRequest(new SensorStatusRequest(), protocol)
-  await sendTestRequest(new RawImuRequest(), protocol)
-  await sendTestRequest(new ServoRequest(), protocol)
-  await sendTestRequest(new MotorRequest(), protocol)
-  await sendTestRequest(new RcChannelRequest(), protocol)
-  await sendTestRequest(new RawGpsRequest(), protocol)
-  await sendTestRequest(new CompGpsRequest(), protocol)
-  await sendTestRequest(new GpsStatisticsRequest(), protocol)
-  await sendTestRequest(new AttitudeRequest(), protocol)
-  await sendTestRequest(new AltitudeRequest(), protocol)
-  await sendTestRequest(new SonarRequest(), protocol)
-  await sendTestRequest(new AnalogRequest(), protocol)
-  await sendTestRequest(new RcTuningRequest(), protocol)
-  await sendTestRequest(new PIDRequest(), protocol)
-  await sendTestRequest(new ArmingConfigRequest(), protocol)
-  await sendTestRequest(new LoopTimeRequest(), protocol)
-  await sendTestRequest(new ThreeDeeRequest(), protocol)
-  await sendTestRequest(new BoxNamesRequest(), protocol)
-  await sendTestRequest(new PidNamesRequest(), protocol)
-  await sendTestRequest(new WPRequest(), protocol)
-  await sendTestRequest(new BoxIDsRequest(), protocol)
-  await sendTestRequest(new ServoMixRulesRequest(), protocol)
-  await sendTestRequest(new RxConfigRequest(), protocol)
+  await sendTestRequest(new NameRequest(), protocol)
+  // await sendTestRequest(new VersionRequest(), protocol)
+  // await sendTestRequest(new IdentRequest(), protocol)
+  // await sendTestRequest(new StatusExRequest(), protocol)
+  // await sendTestRequest(new ActiveBoxesRequest(), protocol)
+  // await sendTestRequest(new SensorStatusRequest(), protocol)
+  // await sendTestRequest(new RawImuRequest(), protocol)
+  // await sendTestRequest(new ServoRequest(), protocol)
+  // await sendTestRequest(new MotorRequest(), protocol)
+  // await sendTestRequest(new RcChannelRequest(), protocol)
+  // await sendTestRequest(new RawGpsRequest(), protocol)
+  // await sendTestRequest(new CompGpsRequest(), protocol)
+  // await sendTestRequest(new GpsStatisticsRequest(), protocol)
+  // await sendTestRequest(new AttitudeRequest(), protocol)
+  // await sendTestRequest(new AltitudeRequest(), protocol)
+  // await sendTestRequest(new SonarRequest(), protocol)
+  // await sendTestRequest(new AnalogRequest(), protocol)
+  // await sendTestRequest(new RcTuningRequest(), protocol)
+  // await sendTestRequest(new PIDRequest(), protocol)
+  // await sendTestRequest(new ArmingConfigRequest(), protocol)
+  // await sendTestRequest(new LoopTimeRequest(), protocol)
+  // await sendTestRequest(new ThreeDeeRequest(), protocol)
+  // await sendTestRequest(new BoxNamesRequest(), protocol)
+  // await sendTestRequest(new PidNamesRequest(), protocol)
+  // await sendTestRequest(new WPRequest(), protocol)
+  // await sendTestRequest(new BoxIDsRequest(), protocol)
+  // await sendTestRequest(new ServoMixRulesRequest(), protocol)
+  // await sendTestRequest(new RxConfigRequest(), protocol)
 }
 
 async function loop() {

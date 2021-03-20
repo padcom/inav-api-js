@@ -50,4 +50,14 @@ export class Response {
   getUint32(offset, ...args) {
     return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
   }
+
+  getString(offset) {
+    let result = ''
+    for (let i = 0; i < this.payload.byteLength; i++) {
+      const char = this.payload.getUint8(i)
+      if (!char) break
+      result += String.fromCharCode(char)
+    }
+    return result
+  }
 }
