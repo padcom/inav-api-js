@@ -17,13 +17,11 @@ export class ModeRangesResponse extends Response {
   get ranges() {
     const result = []
     for (let i = 0; i < this.count; i++) {
-      const id = this.getUint8(i * 2)
-      const auxChannelIndex = this.getUint8(i * 2 + 1)
-      const start = 900 + this.getUint8(i * 2 + 2) * 25
-      const end = 900 + this.getUint8(i * 2 + 3) * 25
-      if (start > 900 && end > 900) {
-        result.push({ id, auxChannelIndex, start, end })
-      }
+      const id = this.getUint8(i * 4)
+      const auxChannelIndex = this.getUint8(i * 4 + 1)
+      const start = 900 + this.getUint8(i * 4 + 2) * 25
+      const end = 900 + this.getUint8(i * 4 + 3) * 25
+      result.push({ id, auxChannelIndex, start, end })
     }
     return result
   }
