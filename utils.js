@@ -31,3 +31,10 @@ export function sleep(ms) {
 export function bitCheck(num, bit) {
   return (num >> bit) % 2 != 0
 }
+
+export function switchKeyValues(obj) {
+  console.log('obj:', obj)
+  return Object
+    .keys(obj)
+    .reduce((acc, field, index) => ({ ...acc, [obj[field]]: field }), {})
+}

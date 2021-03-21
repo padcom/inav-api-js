@@ -1,5 +1,6 @@
 import { Request } from '../Request'
 import { Response } from '../Response'
+import { switchKeyValues } from '../utils'
 
 export const MSP_VTX_CONFIG = 88
 
@@ -10,8 +11,12 @@ export class VtxConfigRequest extends Request {
 }
 
 export const VTX_TYPE = {
+  DEV_SMARTAUDIO: 3,
+  DEV_TRAMP: 4,
   UNKNOWN: 0xFF
 }
+
+export const VTX_TYPE_NAME = switchKeyValues(VTX_TYPE)
 
 export const VTX_BAND = {
   1: 'Boscam A',
@@ -34,6 +39,11 @@ export class VtxConfigResponse extends Response {
     return this.getUint8(0)
   }
 
+  get deviceTypeName() {
+    console.log(VTX_TYPE_NAME)
+    return this.supported ? VTX_TYPE_NAME[this.deviceType] : undefined
+  }
+
   get supported() {
     return this.deviceType !== VTX_TYPE.DEV_UNKNOWN
   }
@@ -54,7 +64,23 @@ export class VtxConfigResponse extends Response {
     return this.supported ? this.getUint8(3) : undefined
   }
 
-  get pitmode() {
+  get minPower() {
+    return this.supported ? 1 : undefined
+  }
+
+  get getMaxPower() {
+    if (this.supported) {
+      if (this.deviceType === VTX_TYPE.DEV_SMARTAUDIO || this.deviceType === VTX_TYPE.DEV_TRAMP) {
+        return 5
+      } else {
+        return 3
+      }
+    } else {
+      return undefined
+    }
+  }
+
+  get pitMode() {
     return this.supported ? this.getUint8(4) : undefined
   }
 
@@ -62,7 +88,7 @@ export class VtxConfigResponse extends Response {
     return this.supported ? this.getUint8(5) : undefined
   }
 
-  get low_power_disarm() {
+  get lowPowerDisarm() {
     return this.supported ? this.getUint8(6) : undefined
   }
 }

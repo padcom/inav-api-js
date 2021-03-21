@@ -121,8 +121,8 @@ async function test(protocol) {
   // await sendTestRequest(new SdCardSummaryRequest(), protocol)
   // await sendTestRequest(new BlackBoxConfigRequest(), protocol)
   // await sendTestRequest(new TransponderConfigRequest(), protocol)
-  // await sendTestRequest(new VtxConfigRequest(), protocol)
-  await sendTestRequest(new AdvancedConfigRequest(), protocol)
+  await sendTestRequest(new VtxConfigRequest(), protocol)
+  // await sendTestRequest(new AdvancedConfigRequest(), protocol)
 }
 
 async function loop() {
