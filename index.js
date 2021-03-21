@@ -52,6 +52,7 @@ import { CfSerialConfigRequest } from './command/CfSerialConfig'
 import { DataFlashSummaryRequest } from './command/DataFlashSummary'
 import { FailsafeConfigRequest } from './command/FailsafeConfig'
 import { SdCardSummaryRequest } from './command/SdCardSummary'
+import { BlackBoxConfigRequest } from './command/BlackBoxConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -114,7 +115,8 @@ async function test(protocol) {
   // await sendTestRequest(new CfSerialConfigRequest(), protocol)
   // await sendTestRequest(new DataFlashSummaryRequest(), protocol)
   // await sendTestRequest(new FailsafeConfigRequest(), protocol)
-  await sendTestRequest(new SdCardSummaryRequest(), protocol)
+  // await sendTestRequest(new SdCardSummaryRequest(), protocol)
+  await sendTestRequest(new BlackBoxConfigRequest(), protocol)
 }
 
 async function loop() {
