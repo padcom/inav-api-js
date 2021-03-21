@@ -54,6 +54,7 @@ import { FailsafeConfigRequest } from './command/FailsafeConfig'
 import { SdCardSummaryRequest } from './command/SdCardSummary'
 import { BlackBoxConfigRequest } from './command/BlackBoxConfig'
 import { TransponderConfigRequest } from './command/TransponderConfig'
+import { VtxConfigRequest } from './command/VtxConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -118,7 +119,8 @@ async function test(protocol) {
   // await sendTestRequest(new FailsafeConfigRequest(), protocol)
   // await sendTestRequest(new SdCardSummaryRequest(), protocol)
   // await sendTestRequest(new BlackBoxConfigRequest(), protocol)
-  await sendTestRequest(new TransponderConfigRequest(), protocol)
+  // await sendTestRequest(new TransponderConfigRequest(), protocol)
+  await sendTestRequest(new VtxConfigRequest(), protocol)
 }
 
 async function loop() {
