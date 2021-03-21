@@ -30,7 +30,7 @@ import { AltitudeRequest } from './command/Altitude'
 import { SonarRequest } from './command/Sonar'
 import { AnalogRequest } from './command/Analog'
 import { RcTuningRequest } from './command/RcTuning'
-import { PIDRequest } from './command/PID'
+import { PidRequest } from './command/Pid'
 import { ArmingConfigRequest } from './command/ArmingConfig'
 import { LoopTimeRequest } from './command/LoopTime'
 import { ThreeDeeRequest } from './command/3D'
@@ -98,7 +98,7 @@ async function test(protocol) {
   // await sendTestRequest(new SonarRequest(), protocol)
   // await sendTestRequest(new AnalogRequest(), protocol)
   // await sendTestRequest(new RcTuningRequest(), protocol)
-  // await sendTestRequest(new PIDRequest(), protocol)
+  await sendTestRequest(new PidRequest(), protocol)
   // await sendTestRequest(new ArmingConfigRequest(), protocol)
   // await sendTestRequest(new LoopTimeRequest(), protocol)
   // await sendTestRequest(new ThreeDeeRequest(), protocol)

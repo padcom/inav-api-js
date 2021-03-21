@@ -4,13 +4,13 @@ import { getKeyForValue } from '../utils'
 
 export const MSP_PID = 112
 
-export class PIDRequest extends Request {
+export class PidRequest extends Request {
   constructor() {
     super(MSP_PID)
   }
 }
 
-export class PIDResponse extends Response {
+export class PidResponse extends Response {
   get count() {
     return this.payload.byteLength / 3
   }
