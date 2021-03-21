@@ -57,6 +57,7 @@ import { TransponderConfigRequest } from './command/TransponderConfig'
 import { VtxConfigRequest } from './command/VtxConfig'
 import { AdvancedConfigRequest } from './command/AdvancedConfig'
 import { FilterConfigRequest } from './command/FilterConfig'
+import { PidAdvancedRequest } from './command/PidAdvanced'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -98,7 +99,7 @@ async function test(protocol) {
   // await sendTestRequest(new SonarRequest(), protocol)
   // await sendTestRequest(new AnalogRequest(), protocol)
   // await sendTestRequest(new RcTuningRequest(), protocol)
-  await sendTestRequest(new PidRequest(), protocol)
+  // await sendTestRequest(new PidRequest(), protocol)
   // await sendTestRequest(new ArmingConfigRequest(), protocol)
   // await sendTestRequest(new LoopTimeRequest(), protocol)
   // await sendTestRequest(new ThreeDeeRequest(), protocol)
@@ -124,7 +125,8 @@ async function test(protocol) {
   // await sendTestRequest(new TransponderConfigRequest(), protocol)
   // await sendTestRequest(new VtxConfigRequest(), protocol)
   // await sendTestRequest(new AdvancedConfigRequest(), protocol)
-  await sendTestRequest(new FilterConfigRequest(), protocol)
+  // await sendTestRequest(new FilterConfigRequest(), protocol)
+  await sendTestRequest(new PidAdvancedRequest(), protocol)
 }
 
 async function loop() {
