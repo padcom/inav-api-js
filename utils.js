@@ -33,7 +33,6 @@ export function bitCheck(num, bit) {
 }
 
 export function switchKeyValues(obj) {
-  console.log('obj:', obj)
   return Object
     .keys(obj)
     .reduce((acc, field, index) => ({ ...acc, [obj[field]]: field }), {})
