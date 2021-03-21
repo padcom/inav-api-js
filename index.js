@@ -69,6 +69,7 @@ import { GpsSvInfoRequest } from './command/GpsSvInfo'
 import { RxMapRequest } from './command/RxMap'
 import { BfConfigRequest } from './command/BfConfig'
 import { BfBuildInfoRequest } from './command/BfBuildInfo'
+import { SetRebootRequest } from './command/SetReboot'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -83,8 +84,8 @@ decodedPackages.on('data', response => {
   console.log('[MAIN]', response.toString())
 })
 
-async function sendTestRequest(request, protocol) {
-  console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry)).toString())
+async function sendTestRequest(request, protocol, timeout = 300) {
+  console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
 }
 
 async function test(protocol) {
@@ -148,7 +149,7 @@ async function test(protocol) {
   // await sendTestRequest(new GpsSvInfoRequest(), protocol)
   // await sendTestRequest(new RxMapRequest(), protocol)
   // await sendTestRequest(new BfConfigRequest(), protocol)
-  await sendTestRequest(new BfBuildInfoRequest(), protocol)
+  // await sendTestRequest(new BfBuildInfoRequest(), protocol)
 }
 
 async function loop() {
