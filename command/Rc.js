@@ -3,13 +3,13 @@ import { Response } from '../Response'
 
 export const MSP_RC = 105
 
-export class RcChannelRequest extends Request {
+export class RcRequest extends Request {
   constructor() {
     super(MSP_RC)
   }
 }
 
-export class RcChannelResponse extends Response {
+export class RcResponse extends Response {
   get count() {
     return this.payload.byteLength / 2
   }
