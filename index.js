@@ -62,6 +62,7 @@ import { MotorPinsRequest } from './command/MotorPins'
 import { ServoConfigurationsRequest } from './command/ServoConfigurations'
 import { RcDeadbandRequest } from './command/RcDeadband'
 import { SensorAlignmentRequest } from './command/SensorAlignment'
+import { RtcRequest } from './command/Rtc'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -134,7 +135,8 @@ async function test(protocol) {
   // await sendTestRequest(new MotorPinsRequest(), protocol)
   // await sendTestRequest(new ServoConfigurationsRequest(), protocol)
   // await sendTestRequest(new RcDeadbandRequest(), protocol)
-  await sendTestRequest(new SensorAlignmentRequest(), protocol)
+  // await sendTestRequest(new SensorAlignmentRequest(), protocol)
+  await sendTestRequest(new RtcRequest(), protocol)
 }
 
 async function loop() {
