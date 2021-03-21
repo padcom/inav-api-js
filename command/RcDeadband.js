@@ -14,15 +14,15 @@ export class RcDeadbandResponse extends Response {
     return this.getUint8(0)
   }
 
-  get yaw_deadband() {
+  get yaw() {
     return this.getUint8(1)
   }
 
-  get alt_hold_deadband() {
+  get altHold() {
     return this.getUint8(2)
   }
 
-  get deadband_throttle() {
+  get throttle() {
     return this.getUint16(3, true)
   }
 }
