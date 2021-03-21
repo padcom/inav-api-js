@@ -65,6 +65,8 @@ import { SensorAlignmentRequest } from './command/SensorAlignment'
 import { RtcRequest } from './command/Rtc'
 import { UidRequest } from './command/Uid'
 import { AccTrimRequest } from './command/AccTrim'
+import { GpsSvInfoRequest } from './command/GpsSvInfo'
+import { RxMapRequest } from './command/RxMap'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -140,7 +142,9 @@ async function test(protocol) {
   // await sendTestRequest(new SensorAlignmentRequest(), protocol)
   // await sendTestRequest(new RtcRequest(), protocol)
   // await sendTestRequest(new UidRequest(), protocol)
-  await sendTestRequest(new AccTrimRequest(), protocol)
+  // await sendTestRequest(new AccTrimRequest(), protocol)
+  // await sendTestRequest(new GpsSvInfoRequest(), protocol)
+  await sendTestRequest(new RxMapRequest(), protocol)
 }
 
 async function loop() {
