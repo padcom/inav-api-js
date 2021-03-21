@@ -67,6 +67,7 @@ import { UidRequest } from './command/Uid'
 import { AccTrimRequest } from './command/AccTrim'
 import { GpsSvInfoRequest } from './command/GpsSvInfo'
 import { RxMapRequest } from './command/RxMap'
+import { BfConfigRequest } from './command/BfConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -144,7 +145,8 @@ async function test(protocol) {
   // await sendTestRequest(new UidRequest(), protocol)
   // await sendTestRequest(new AccTrimRequest(), protocol)
   // await sendTestRequest(new GpsSvInfoRequest(), protocol)
-  await sendTestRequest(new RxMapRequest(), protocol)
+  // await sendTestRequest(new RxMapRequest(), protocol)
+  await sendTestRequest(new BfConfigRequest(), protocol)
 }
 
 async function loop() {
