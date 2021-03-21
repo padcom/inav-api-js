@@ -53,6 +53,7 @@ import { DataFlashSummaryRequest } from './command/DataFlashSummary'
 import { FailsafeConfigRequest } from './command/FailsafeConfig'
 import { SdCardSummaryRequest } from './command/SdCardSummary'
 import { BlackBoxConfigRequest } from './command/BlackBoxConfig'
+import { TransponderConfigRequest } from './command/TransponderConfig'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -116,7 +117,8 @@ async function test(protocol) {
   // await sendTestRequest(new DataFlashSummaryRequest(), protocol)
   // await sendTestRequest(new FailsafeConfigRequest(), protocol)
   // await sendTestRequest(new SdCardSummaryRequest(), protocol)
-  await sendTestRequest(new BlackBoxConfigRequest(), protocol)
+  // await sendTestRequest(new BlackBoxConfigRequest(), protocol)
+  await sendTestRequest(new TransponderConfigRequest(), protocol)
 }
 
 async function loop() {

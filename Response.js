@@ -51,6 +51,15 @@ export class Response {
     return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
   }
 
+  getUint8Array(offset, maxLength = this.payload.byteLength) {
+    const last = Math.min(offset + maxLength, this.payload.byteLength)
+    const result = []
+    for (let i = offset; i < last; i++) {
+      result.push(this.payload.getUint8(i))
+    }
+    return result
+  }
+
   getString(offset, maxLength = this.payload.byteLength) {
     const last = Math.min(offset + maxLength, this.payload.byteLength)
     let result = ''
