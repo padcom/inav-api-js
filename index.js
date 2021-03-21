@@ -59,6 +59,7 @@ import { AdvancedConfigRequest } from './command/AdvancedConfig'
 import { FilterConfigRequest } from './command/FilterConfig'
 import { PidAdvancedRequest } from './command/PidAdvanced'
 import { MotorPinsRequest } from './command/MotorPins'
+import { ServoConfigurationsRequest } from './command/ServoConfigurations'
 
 const registry = new CommandRegistry()
 await registry.init()
@@ -128,7 +129,8 @@ async function test(protocol) {
   // await sendTestRequest(new AdvancedConfigRequest(), protocol)
   // await sendTestRequest(new FilterConfigRequest(), protocol)
   // await sendTestRequest(new PidAdvancedRequest(), protocol)
-  await sendTestRequest(new MotorPinsRequest(), protocol)
+  // await sendTestRequest(new MotorPinsRequest(), protocol)
+  await sendTestRequest(new ServoConfigurationsRequest(), protocol)
 }
 
 async function loop() {
