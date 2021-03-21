@@ -20,8 +20,8 @@ export function readonly(object, field, value) {
   })
 }
 
-export function hex(n) {
-  return `0x${('00' + n.toString(16)).substr(-2)}`
+export function hex(n, width = 2) {
+  return `0x${('0'.repeat(width) + n.toString(16)).substr(-width)}`
 }
 
 export function sleep(ms) {
