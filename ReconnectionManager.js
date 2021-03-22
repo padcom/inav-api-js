@@ -46,11 +46,11 @@ export class ReconnectionManager extends EventEmitter {
       try {
         this.#sendIdentRequest()
         await this.#waitForIdentResponse()
+        this.emit('reconnected')
         break
       } catch (e) {
       }
     }
-    this.emit('reconnected')
   }
 
   async #waitForPortToExist() {
