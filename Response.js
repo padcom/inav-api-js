@@ -15,7 +15,7 @@ export class Response {
     const plLen = this.payload.byteLength
     const properties = this.getToStringContent()
 
-    return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}, payload: ${hex(plLen)} bytes) ${properties}`
+    return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}/${command}, payload: ${hex(plLen)} bytes) ${properties}`
   }
 
   getToStringContent() {
