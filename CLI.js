@@ -23,12 +23,14 @@ export class CLI {
       const lines = []
       const reader = new Readline()
       this.#port.pipe(reader)
+
       const timer = new Timer()
 
       const handler = data => {
         timer.reset()
         lines.push(data)
       }
+
       const cleanup = () => {
         timer.stop()
         reader.off('data', handler)

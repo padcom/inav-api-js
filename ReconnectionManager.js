@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
 import SerialPort from 'serialport'
-import { runWithTimeout, sleep, Timer, waitForSingleEvent } from "./utils"
+import { runWithTimeout, waitForSingleEvent } from "./utils"
 
 export class ReconnectionManager extends EventEmitter {
   #port = null
