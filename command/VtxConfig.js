@@ -40,7 +40,6 @@ export class VtxConfigResponse extends Response {
   }
 
   get deviceTypeName() {
-    console.log(VTX_TYPE_NAME)
     return this.supported ? VTX_TYPE_NAME[this.deviceType] : undefined
   }
 
