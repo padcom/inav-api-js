@@ -64,7 +64,7 @@ function mspQueryWithRetry(count) {
         return await mspQuery(port, request, protocol, commandRegistry, timeout, debug)
       } catch (e) {
         if (--counter === 0) throw e
-        console.log('[MSP] Retrying', count - counter)
+        if (debug) console.log('[MSP] Retrying', count - counter)
       }
     }
   }
