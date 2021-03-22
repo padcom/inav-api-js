@@ -2,6 +2,7 @@ import { PassThrough } from 'stream'
 import { BufferedPacketReader } from './BufferedPacketReader'
 import { PacketDecoder } from './PacketDecoder'
 import { PacketEncoder } from './PacketEncoder'
+import { waitForSingleEvent, runWithTimeout } from './utils'
 
 export async function mspSend(port, request, protocol, debug = false) {
   if (debug) console.log('[MSP] >', request)
@@ -26,53 +27,33 @@ export async function mspSend(port, request, protocol, debug = false) {
 }
 
 export async function mspReceive(port, commandRegistry, timeout = 100, debug = false) {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      cleanup()
-      reject(new Error('Timeout'))
-    }, timeout)
+  const packetDecoder = port
+    .pipe(new BufferedPacketReader())
+    .pipe(new PacketDecoder(commandRegistry))
 
-    function cleanup() {
-      packetDecoder.off('data', handler)
-      port.unpipe(packetDecoder)
-      clearTimeout(timer)
-    }
-
-    const packetDecoder = port
-      .pipe(new BufferedPacketReader())
-      .pipe(new PacketDecoder(commandRegistry))
-
-    function handler(response) {
-      if (debug) console.log('[MSP] <', response)
-      cleanup()
-      resolve(response)
-    }
-
-    packetDecoder.on('data', handler)
-  })
+  try {
+    const response = await waitForSingleEvent(packetDecoder, 'data', timeout)
+    if (debug) console.log('[MSP] <', response)
+    return response
+  } finally {
+    port.unpipe(packetDecoder)
+  }
 }
 
-async function mspQuery(port, request, protocol, commandRegistry, timeout = 100, debug = false) {
-  const timer = setTimeout(cleanup, timeout)
-
-  let waitingForResponse = true
-
-  function cleanup() {
-    waitingForResponse = false
-    clearTimeout(timer)
-  }
-
-  // not using await here to immediately start listening for incoming messages
-  mspSend(port, request, protocol, debug)
-  while (waitingForResponse) {
-    const response = await mspReceive(port, commandRegistry, timeout, debug)
-    if (response.command === request.command) {
-      cleanup()
-      return response
+export async function mspQuery(port, request, protocol, commandRegistry, timeout = 100, debug = false) {
+  return runWithTimeout(timeout, timeout, async () => {
+    mspSend(port, request, protocol, debug)
+    try {
+      const response = await mspReceive(port, commandRegistry, timeout, debug)
+      if (response.command === request.command) {
+        return response
+      } else {
+        return false
+      }
+    } catch {
+      return false
     }
-  }
-
-  throw new Error('Timeout')
+  })
 }
 
 function mspQueryWithRetry(count) {
