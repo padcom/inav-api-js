@@ -161,14 +161,6 @@ async function test(protocol) {
   console.log('[MAIN] Done')
 }
 
-async function loop() {
-  for (let i = 0; i < 100; i++) {
-    await test(new MSPv1())
-    await test(new MSPv2())
-  }
-  port.close()
-}
-
 async function main() {
   await test(new MSPv1())
   await test(new MSPv2())
