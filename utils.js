@@ -83,7 +83,8 @@ export async function waitForSingleEvent(emitter, event, timeout = 1000) {
     try {
       emitter.once(event, handler)
     } catch (e) {
-      console.log('Error', e)
+      cleanup()
+      reject(e)
     }
 
     const cleanup = () => {
