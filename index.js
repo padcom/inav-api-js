@@ -172,9 +172,6 @@ async function cli(port) {
   console.log('[MAIN] Done')
 }
 
-const registry = new CommandRegistry()
-await registry.init()
-
 const port = new SerialPort('/dev/ttyACM0')
 port.on('open', () => { console.log('[MAIN] Port open') })
 port.on('close', () => { console.log('[MAIN] Port closed')})
@@ -188,6 +185,9 @@ reconnectionManager.on('reconnecting', retry => { console.log(`[MAIN] Restoring 
 reconnectionManager.on('reconnected', () => { console.log('[MAIN] Reconnected') })
 
 await reconnectionManager.connect()
+
+const registry = new CommandRegistry()
+await registry.init()
 
 await cli(port)
 await main(port, registry)
