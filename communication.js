@@ -90,3 +90,4 @@ function mspQueryWithRetry(count) {
 }
 
 export const sendAndWaitForResponse = mspQueryWithRetry(3)
+export const sendAndWaitForResponseWithRetryCount = mspQueryWithRetry

@@ -1,12 +1,15 @@
 #!/usr/bin/env -S node -r esm
 
 import SerialPort from 'serialport'
+import { ReconnectionManager } from './ReconnectionManager'
 import { MSPv1 } from './MSPv1'
 import { MSPv2 } from './MSPv2'
 import { CommandRegistry } from './CommandRegistry'
 import { BufferedPacketReader } from './BufferedPacketReader'
 import { PacketDecoder } from './PacketDecoder'
 import { sendAndWaitForResponse } from './communication'
+import { CLI } from './CLI'
+import { waitForSingleEvent } from './utils'
 
 import { VersionRequest } from './command/Version'
 import { NameRequest } from './command/Name'
@@ -75,81 +78,87 @@ const registry = new CommandRegistry()
 await registry.init()
 
 const port = new SerialPort('/dev/ttyACM0')
-
-const decodedPackages = port
-  .pipe(new BufferedPacketReader())
-  .pipe(new PacketDecoder(registry))
-
-decodedPackages.on('data', response => {
-  console.log('[MAIN]', response.toString())
-})
+port.on('open', () => { console.log('[MAIN] Port open') })
+port.on('close', () => { console.log('[MAIN] Port closed')})
 
 async function sendTestRequest(request, protocol, timeout = 300) {
   console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
 }
 
 async function test(protocol) {
-  // await sendTestRequest(new VersionRequest(), protocol)
-  // await sendTestRequest(new NameRequest(), protocol)
-  // await sendTestRequest(new FcVariantRequest(), protocol)
-  // await sendTestRequest(new FcVersionRequest(), protocol)
-  // await sendTestRequest(new BuildInfoRequest(), protocol)
-  // await sendTestRequest(new IdentRequest(), protocol)
-  // await sendTestRequest(new StatusExRequest(), protocol)
-  // await sendTestRequest(new ActiveBoxesRequest(), protocol)
-  // await sendTestRequest(new SensorStatusRequest(), protocol)
-  // await sendTestRequest(new SensorConfigRequest(), protocol)
-  // await sendTestRequest(new RawImuRequest(), protocol)
-  // await sendTestRequest(new ServoRequest(), protocol)
-  // await sendTestRequest(new MotorRequest(), protocol)
-  // await sendTestRequest(new RcRequest(), protocol)
-  // await sendTestRequest(new RawGpsRequest(), protocol)
-  // await sendTestRequest(new CompGpsRequest(), protocol)
-  // await sendTestRequest(new GpsStatisticsRequest(), protocol)
-  // await sendTestRequest(new AttitudeRequest(), protocol)
-  // await sendTestRequest(new AltitudeRequest(), protocol)
-  // await sendTestRequest(new SonarRequest(), protocol)
-  // await sendTestRequest(new AnalogRequest(), protocol)
-  // await sendTestRequest(new RcTuningRequest(), protocol)
-  // await sendTestRequest(new PidRequest(), protocol)
-  // await sendTestRequest(new ArmingConfigRequest(), protocol)
-  // await sendTestRequest(new LoopTimeRequest(), protocol)
-  // await sendTestRequest(new ThreeDeeRequest(), protocol)
-  // await sendTestRequest(new BoxNamesRequest(), protocol)
-  // await sendTestRequest(new PidNamesRequest(), protocol)
-  // await sendTestRequest(new WPRequest(), protocol)
-  // await sendTestRequest(new BoxIDsRequest(), protocol)
-  // await sendTestRequest(new ServoMixRulesRequest(), protocol)
-  // await sendTestRequest(new RxConfigRequest(), protocol)
-  // await sendTestRequest(new NavPosHoldRequest(), protocol)
-  // await sendTestRequest(new CalibrationDataRequest(), protocol)
-  // await sendTestRequest(new PositionEstimationConfigRequest(), protocol)
-  // await sendTestRequest(new RthAndLandConfigRequest(), protocol)
-  // await sendTestRequest(new ChannelForwardingRequest(), protocol)
-  // await sendTestRequest(new ModeRangesRequest(), protocol)
-  // await sendTestRequest(new LedColorsRequest(), protocol)
-  // await sendTestRequest(new AdjustmentRangesRequest(), protocol)
-  // await sendTestRequest(new CfSerialConfigRequest(), protocol)
-  // await sendTestRequest(new DataFlashSummaryRequest(), protocol)
-  // await sendTestRequest(new FailsafeConfigRequest(), protocol)
-  // await sendTestRequest(new SdCardSummaryRequest(), protocol)
-  // await sendTestRequest(new BlackBoxConfigRequest(), protocol)
-  // await sendTestRequest(new TransponderConfigRequest(), protocol)
-  // await sendTestRequest(new VtxConfigRequest(), protocol)
-  // await sendTestRequest(new AdvancedConfigRequest(), protocol)
-  // await sendTestRequest(new FilterConfigRequest(), protocol)
-  // await sendTestRequest(new PidAdvancedRequest(), protocol)
-  // await sendTestRequest(new MotorPinsRequest(), protocol)
-  // await sendTestRequest(new ServoConfigurationsRequest(), protocol)
-  // await sendTestRequest(new RcDeadbandRequest(), protocol)
-  // await sendTestRequest(new SensorAlignmentRequest(), protocol)
-  // await sendTestRequest(new RtcRequest(), protocol)
-  // await sendTestRequest(new UidRequest(), protocol)
-  // await sendTestRequest(new AccTrimRequest(), protocol)
-  // await sendTestRequest(new GpsSvInfoRequest(), protocol)
-  // await sendTestRequest(new RxMapRequest(), protocol)
-  // await sendTestRequest(new BfConfigRequest(), protocol)
-  // await sendTestRequest(new BfBuildInfoRequest(), protocol)
+  const decodedPackages = port
+    .pipe(new BufferedPacketReader())
+    .pipe(new PacketDecoder(registry))
+
+  decodedPackages.on('data', response => {
+    console.log('[MAIN]', response.toString())
+  })
+
+  console.log('[MAIN] Testing commands')
+
+  await sendTestRequest(new VersionRequest(), protocol)
+  await sendTestRequest(new NameRequest(), protocol)
+  await sendTestRequest(new FcVariantRequest(), protocol)
+  await sendTestRequest(new FcVersionRequest(), protocol)
+  await sendTestRequest(new BuildInfoRequest(), protocol)
+  await sendTestRequest(new IdentRequest(), protocol)
+  await sendTestRequest(new StatusExRequest(), protocol)
+  await sendTestRequest(new ActiveBoxesRequest(), protocol)
+  await sendTestRequest(new SensorStatusRequest(), protocol)
+  await sendTestRequest(new SensorConfigRequest(), protocol)
+  await sendTestRequest(new RawImuRequest(), protocol)
+  await sendTestRequest(new ServoRequest(), protocol)
+  await sendTestRequest(new MotorRequest(), protocol)
+  await sendTestRequest(new RcRequest(), protocol)
+  await sendTestRequest(new RawGpsRequest(), protocol)
+  await sendTestRequest(new CompGpsRequest(), protocol)
+  await sendTestRequest(new GpsStatisticsRequest(), protocol)
+  await sendTestRequest(new AttitudeRequest(), protocol)
+  await sendTestRequest(new AltitudeRequest(), protocol)
+  await sendTestRequest(new SonarRequest(), protocol)
+  await sendTestRequest(new AnalogRequest(), protocol)
+  await sendTestRequest(new RcTuningRequest(), protocol)
+  await sendTestRequest(new PidRequest(), protocol)
+  await sendTestRequest(new ArmingConfigRequest(), protocol)
+  await sendTestRequest(new LoopTimeRequest(), protocol)
+  await sendTestRequest(new ThreeDeeRequest(), protocol)
+  await sendTestRequest(new BoxNamesRequest(), protocol)
+  await sendTestRequest(new PidNamesRequest(), protocol)
+  await sendTestRequest(new WPRequest(), protocol)
+  await sendTestRequest(new BoxIDsRequest(), protocol)
+  await sendTestRequest(new ServoMixRulesRequest(), protocol)
+  await sendTestRequest(new RxConfigRequest(), protocol)
+  await sendTestRequest(new NavPosHoldRequest(), protocol)
+  await sendTestRequest(new CalibrationDataRequest(), protocol)
+  await sendTestRequest(new PositionEstimationConfigRequest(), protocol)
+  await sendTestRequest(new RthAndLandConfigRequest(), protocol)
+  await sendTestRequest(new ChannelForwardingRequest(), protocol)
+  await sendTestRequest(new ModeRangesRequest(), protocol)
+  await sendTestRequest(new LedColorsRequest(), protocol)
+  await sendTestRequest(new AdjustmentRangesRequest(), protocol)
+  await sendTestRequest(new CfSerialConfigRequest(), protocol)
+  await sendTestRequest(new DataFlashSummaryRequest(), protocol)
+  await sendTestRequest(new FailsafeConfigRequest(), protocol)
+  await sendTestRequest(new SdCardSummaryRequest(), protocol)
+  await sendTestRequest(new BlackBoxConfigRequest(), protocol)
+  await sendTestRequest(new TransponderConfigRequest(), protocol)
+  await sendTestRequest(new VtxConfigRequest(), protocol)
+  await sendTestRequest(new AdvancedConfigRequest(), protocol)
+  await sendTestRequest(new FilterConfigRequest(), protocol)
+  await sendTestRequest(new PidAdvancedRequest(), protocol)
+  await sendTestRequest(new MotorPinsRequest(), protocol)
+  await sendTestRequest(new ServoConfigurationsRequest(), protocol)
+  await sendTestRequest(new RcDeadbandRequest(), protocol)
+  await sendTestRequest(new SensorAlignmentRequest(), protocol)
+  await sendTestRequest(new RtcRequest(), protocol)
+  await sendTestRequest(new UidRequest(), protocol)
+  await sendTestRequest(new AccTrimRequest(), protocol)
+  await sendTestRequest(new GpsSvInfoRequest(), protocol)
+  await sendTestRequest(new RxMapRequest(), protocol)
+  await sendTestRequest(new BfConfigRequest(), protocol)
+  await sendTestRequest(new BfBuildInfoRequest(), protocol)
+
+  console.log('[MAIN] Done')
 }
 
 async function loop() {
@@ -163,7 +172,33 @@ async function loop() {
 async function main() {
   await test(new MSPv1())
   await test(new MSPv2())
-  port.close()
 }
 
+async function cli() {
+  console.log('[MAIN] Testing CLI enter/exit')
+  const cli = new CLI(port)
+  await cli.enter()
+  console.log(await cli.command('version'))
+  console.log(await cli.command('diff'))
+  console.log(await cli.command('help'))
+  console.log(await cli.command('set'))
+  await cli.exit()
+  await reconnectionManager.connect()
+  console.log('[MAIN] Done')
+}
+
+await waitForSingleEvent(port, 'open', 2000)
+
+const reconnectionManager = new ReconnectionManager(port)
+reconnectionManager.on('disconnected', () => { console.log('[MAIN] Disconnected') })
+reconnectionManager.on('available', port => { console.log(`[MAIN] Port ${port.path} available`)})
+reconnectionManager.on('reconnecting', retry => { console.log(`[MAIN] Restoring connection (retries: ${retry})`)})
+reconnectionManager.on('reconnected', () => { console.log('[MAIN] Reconnected') })
+
+await reconnectionManager.connect()
+
+await cli()
 await main()
+
+reconnectionManager.close()
+port.close()
