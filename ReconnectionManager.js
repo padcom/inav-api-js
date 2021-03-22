@@ -39,6 +39,7 @@ export class ReconnectionManager extends EventEmitter {
     await this.#waitForPortToExist()
     this.emit('available', this.#port)
     await this.#waitForPortToOpen()
+    this.emit('opening', this.#port)
     let index = 0
     while (!this.closed) {
       this.emit('reconnecting', index++)
