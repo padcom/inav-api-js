@@ -4,14 +4,11 @@ import { runWithTimeout, sleep, Timer, waitForSingleEvent } from "./utils"
 
 export class ReconnectionManager extends EventEmitter {
   #port = null
-  #closed = false
+  #closed = true
 
   constructor(port) {
     super()
     this.#port = port
-    this.reconnect = true
-
-    this.#port.on('close', this.#portClosedHandler)
   }
 
   close () {
@@ -20,6 +17,11 @@ export class ReconnectionManager extends EventEmitter {
   }
 
   async connect(timeout = 10000) {
+    if (this.#closed) {
+      this.#closed = false
+      this.#port.on('close', this.#portClosedHandler)
+    }
+
     if (this.#port.isOpen) {
       this.#sendIdentRequest()
       return this.#waitForIdentResponse()
@@ -30,7 +32,7 @@ export class ReconnectionManager extends EventEmitter {
 
   #portClosedHandler = () => {
     this.emit('disconnected')
-    if (this.reconnect) this.#reconnect()
+    if (!this.#closed) this.#reconnect()
   }
 
   async #reconnect() {
