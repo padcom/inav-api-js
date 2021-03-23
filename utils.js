@@ -3,6 +3,10 @@ import { Logger } from './logger'
 
 const log = Logger.getLogger('UTILS')
 
+export function constrain(input, min, max) {
+  return Math.max(Math.min(input, max), min)
+}
+
 export function getObjectPropertyNames(obj) {
   return Object
     .getOwnPropertyNames(Object.getPrototypeOf(obj))
