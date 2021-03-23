@@ -78,6 +78,7 @@ import { SetRebootRequest } from './command/v1/SetReboot'
 
 import { SettingRequest as MSPv2SettingRequest } from './command/v2/Setting'
 import { CommonSettingInfoRequest as MSPv2CommonSettingInfoRequest } from './command/v2/CommonSettingInfo'
+import { CommonPgListRequest as MSPv2CommonPgListRequest } from './command/v2/CommonPgList'
 
 
 const log = Logger.getLogger('MAIN')
@@ -168,6 +169,8 @@ async function testv2(port, request) {
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_provider'), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('rx_spi_protocol'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
+  
 }
 
 async function main(port, registry) {
@@ -231,9 +234,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-await testReboot(port, registry, new MSPv1(), reconnectionManager)
-await cli(port)
-await main(port, registry)
+// await testReboot(port, registry, new MSPv1(), reconnectionManager)
+// await cli(port)
+// await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
