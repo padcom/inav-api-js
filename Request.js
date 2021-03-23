@@ -1,7 +1,12 @@
+import { Logger } from './logger'
 import { hex } from './utils'
 
 export class Request {
+  #log = Logger.getLogger('REQUEST')
+
   constructor(command) {
+    this.#log.trace(`Created ${this.constructor.name}`)
+
     this.command = command
   }
 

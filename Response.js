@@ -1,7 +1,12 @@
+import { Logger } from './logger'
 import { getObjectPropertyNames, readonly, hex } from './utils'
 
 export class Response {
+  #log = Logger.getLogger('RESPONSE')
+
   constructor(protocol, buffer) {
+    this.#log.trace(`Created ${this.constructor.name}`)
+
     const decoded = protocol.decode(buffer)
     Object.keys(decoded).forEach(key => {
       readonly(this, key, decoded[key])
@@ -17,13 +22,11 @@ export class Response {
 
     const parts = [
       this.constructor.name,
-      ` (protocol: ${hex(protocol, 4)}/${protocolName}, command: ${hex(command, 4)}/${command}, payload: ${hex(plLen)} bytes)`,
+      ` (protocol: ${hex(protocol, 4)}/${protocolName}, command: ${hex(command, 4)}/${command}, payload: ${plLen} bytes)`,
       properties
     ]
 
     return parts.join(' ')
-
-    // return `${this.constructor.name} (protocol: ${hex(protocol, 4)}/${protocolName}, command: ${hex(command, 4)}/${command}, payload: ${hex(plLen)} bytes) ${properties}`
   }
 
   getToStringContent() {
@@ -57,6 +60,14 @@ export class Response {
 
   getUint32(offset, ...args) {
     return this.payload.byteLength - 4 >= offset ? this.payload.getUint32(offset, ...args) : undefined
+  }
+
+  getFloat32(offset, ...args) {
+    return this.payload.byteLength - 4 >= offset ? this.payload.getFloat32(offset, ...args) : undefined
+  }
+
+  getFloat64(offset, ...args) {
+    return this.payload.byteLength - 4 >= offset ? this.payload.getFloat64(offset, ...args) : undefined
   }
 
   getUint8Array(offset, maxLength = this.payload.byteLength) {

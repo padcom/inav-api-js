@@ -1,6 +1,8 @@
 #!/usr/bin/env -S node -r esm
 
 import SerialPort from 'serialport'
+import './extensions'
+import { Logger } from './logger'
 import { ReconnectionManager } from './ReconnectionManager'
 import { MSPv1 } from './protocol/MSPv1'
 import { MSPv2 } from './protocol/MSPv2'
@@ -75,20 +77,24 @@ import { BfBuildInfoRequest } from './command/v1/BfBuildInfo'
 import { SetRebootRequest } from './command/v1/SetReboot'
 
 import { SettingRequest as MSPv2SettingRequest } from './command/v2/Setting'
+import { CommonSettingInfoRequest as MSPv2CommonSettingInfoRequest } from './command/v2/CommonSettingInfo'
+
+
+const log = Logger.getLogger('MAIN')
 
 async function sendTestRequest(port, registry, request, protocol, timeout = 1000) {
-  console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
+  log.info('TEST', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
 }
 
 async function testReboot(port, registry, protocol, reconnectionManager) {
   const request = new SetRebootRequest()
-  console.log('[TEST] Reboot', await mspSend(port, request, protocol, true))
-  console.log('[TEST] Port closed', await waitForSingleEvent(port, 'close', 5000))
-  console.log('[TEST] Reconnected', await reconnectionManager.connect())
+  log.info('TEST Reboot', await mspSend(port, request, protocol))
+  log.info('TEST Port closed', await waitForSingleEvent(port, 'close', 5000))
+  log.info('TEST Reconnected', await reconnectionManager.connect())
 }
 
 async function test(port, registry, protocol) {
-  console.log('[MAIN] Testing commands')
+  log.info('Testing commands')
 
   await sendTestRequest(port, registry, new VersionRequest(), protocol)
   await sendTestRequest(port, registry, new NameRequest(), protocol)
@@ -152,12 +158,13 @@ async function test(port, registry, protocol) {
   await sendTestRequest(port, registry, new BfConfigRequest(), protocol)
   await sendTestRequest(port, registry, new BfBuildInfoRequest(), protocol)
 
-  console.log('[MAIN] Done')
+  log.info('Done')
 }
 
 async function testv2(port, request) {
   const protocol = new MSPv2()
-  await sendTestRequest(port, registry, new MSPv2SettingRequest('receiver_type'), protocol)
+  await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('receiver_type'), protocol)
 }
 
 async function main(port, registry) {
@@ -166,7 +173,7 @@ async function main(port, registry) {
     .pipe(new PacketDecoder(registry))
 
   decodedPackages.on('data', response => {
-    console.log('[MAIN]', response.toString())
+    log.info(response.toString())
   })
 
   await test(port, registry, new MSPv1())
@@ -178,7 +185,7 @@ async function mainv2(port, registry) {
 }
 
 async function cli(port) {
-  console.log('[MAIN] Testing CLI enter/exit')
+  log.info('Testing CLI enter/exit')
   const cli = new CLI(port)
   await cli.enter()
   console.log(await cli.command('version'))
@@ -187,20 +194,34 @@ async function cli(port) {
   console.log(await cli.command('set'))
   await cli.exit()
   await reconnectionManager.connect()
-  console.log('[MAIN] Done')
+  log.info('Done')
 }
 
+// Logger.getLogger('MSP').level = Logger.Level.TRACE
+// Logger.getLogger('MSPV1').level = Logger.Level.TRACE
+Logger.getLogger('MSPV2').level = Logger.Level.TRACE
+// Logger.getLogger('TIMER').level = Logger.Level.TRACE
+// Logger.getLogger('REQUEST').level = Logger.Level.TRACE
+// Logger.getLogger('RESPONSE').level = Logger.Level.TRACE
+// Logger.getLogger('COMM').level = Logger.Level.TRACE
+
+Logger.events.on('trace', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
+Logger.events.on('debug', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
+Logger.events.on('info', ({ source, args }) => console.log(`INFO  [${source}]`, ...args))
+Logger.events.on('warn', ({ source, args }) => console.log(`WARN  [${source}]`, ...args))
+Logger.events.on('error', ({ source, args }) => console.log(`ERROR [${source}]`, ...args))
+
 const port = new SerialPort('/dev/ttyACM0')
-port.on('open', () => { console.log('[MAIN] Port open') })
-port.on('close', () => { console.log('[MAIN] Port closed')})
+port.on('open', () => { log.info('Port open') })
+port.on('close', () => { log.info('Port closed')})
 
 await waitForSingleEvent(port, 'open', 2000)
 
 const reconnectionManager = new ReconnectionManager(port)
-reconnectionManager.on('disconnected', () => { console.log('[MAIN] Disconnected') })
-reconnectionManager.on('available', port => { console.log(`[MAIN] Port ${port.path} available`)})
-reconnectionManager.on('reconnecting', retry => { console.log(`[MAIN] Restoring connection (retries: ${retry})`)})
-reconnectionManager.on('reconnected', () => { console.log('[MAIN] Reconnected') })
+reconnectionManager.on('disconnected', () => { log.info('Disconnected') })
+reconnectionManager.on('available', port => { log.info(`Port ${port.path} available`)})
+reconnectionManager.on('reconnecting', retry => { log.info(`Restoring connection (retries: ${retry})`)})
+reconnectionManager.on('reconnected', () => { log.info('Reconnected') })
 
 await reconnectionManager.connect()
 

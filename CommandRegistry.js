@@ -1,14 +1,11 @@
 import fs from 'fs'
+import { Logger } from './logger'
 import { hex } from './utils'
 import { UnknownResponse } from './command/Unknown'
 
 export class CommandRegistry {
-  #debug = false
+  #log = Logger.getLogger('REGISTRY')
   #commands = new Map()
-
-  constructor({ debug = false } = {}) {
-    this.#debug = debug
-  }
 
   async init() {
     const v1CommandFiles = fs.readdirSync('./command/v1')
@@ -21,11 +18,11 @@ export class CommandRegistry {
   }
 
   async #registerV1CommandFile(commandFile) {
-    if (this.#debug) console.log('[REGISTRY] Registering v1 command', commandFile)
+    this.#log.debug('[REGISTRY] Registering v1 command', commandFile)
     const commandModule = await import(`./command/v1/${commandFile}`)
     const command = Object.keys(commandModule).find(key => key.startsWith('MSP_'))
     if (!command) {
-      if (this.#debug) console.log(`[REGISTRY] Skipping registration of ${commandFile}: command not found`)
+      this.#log.warn(`[REGISTRY] Skipping registration of ${commandFile}: command not found`)
       return
     }
     const reqClassName = Object.keys(commandModule).find(key => key.endsWith('Request'))
@@ -39,11 +36,11 @@ export class CommandRegistry {
   }
 
   async #registerV2CommandFile(commandFile) {
-    if (this.#debug) console.log('[REGISTRY] Registering v2 command', commandFile)
+    this.#log.debug('[REGISTRY] Registering v2 command', commandFile)
     const commandModule = await import(`./command/v2/${commandFile}`)
     const command = Object.keys(commandModule).find(key => key.startsWith('MSP2_') || key.startsWith('MSPV2_'))
     if (!command) {
-      if (this.#debug) console.log(`[REGISTRY] Skipping registration of ${commandFile}: command not found`)
+      this.#log.warn(`[REGISTRY] Skipping registration of ${commandFile}: command not found`)
       return
     }
     const reqClassName = Object.keys(commandModule).find(key => key.endsWith('Request'))
@@ -58,6 +55,7 @@ export class CommandRegistry {
 
   register(command, code, request, response) {
     if (this.#commands.has(code)) {
+      this.#log.error(`Command ${command} with code ${hex(code)} already registered!`)
       throw new Error(`Command ${command} with code ${hex(code)} already registered!`)
     }
 
@@ -65,9 +63,13 @@ export class CommandRegistry {
   }
 
   getCommandByCode(code) {
+    this.#log.trace(`Retrieving command with code ${hex(code)}/${code}`)
     if (this.#commands.has(code)) {
-      return this.#commands.get(code)
+      const command = this.#commands.get(code)
+      this.#log.debug(`Command with code ${hex(code)}/${code} found ${command}`)
+      return command
     } else {
+      this.#log.warn(`Command with code ${hex(code)}/${code} not found`)
       return {
         command: 'unknown',
         code,

@@ -1,8 +1,40 @@
 import { MSP } from './MSP'
-import { readonly, hex, getByteAtOffset } from '../utils'
+import { hex, getByteAtOffset } from '../utils'
+import { Logger } from '../logger'
 
 export class MSPv2 extends MSP {
+  #log = Logger.getLogger('MSPV2')
+
+  static get PROTOCOL_ID() { 
+    return 'X'.charCodeAt(0)
+  }
+
+  static get PROTOCOL_NAME() { 
+    return 'MSPv2'
+  }
+
+  
+  static decodeCommandCode(buffer) {
+    return getByteAtOffset(buffer, 4) | (getByteAtOffset(buffer, 5) << 8)
+  }
+  
+  static decodePayloadOffset(buffer) {
+    return 8
+  }
+  
+  static decodePayloadLength(buffer) {
+    return getByteAtOffset(buffer, 6) | (getByteAtOffset(buffer, 7) << 8)
+  }
+  
+  static decodeExpectedPacketLength(buffer) {
+    return MSPv2.decodePayloadLength(buffer) + MSPv2.decodePayloadOffset(buffer) + 1 // crc at the end
+  }
+  
   decode(buffer) {
+    this.#log.trace(`Decoding buffer ${buffer.byteLength}`)
+    this.#log.trace(buffer.toString())
+    this.#log.trace(buffer)
+  
     const begin = MSP.decodeStartCode(buffer)
     if (begin !== MSP.START_BYTE) {
       throw new Error(`Invalid start byte ${hex(buffer[0])}`)
@@ -24,6 +56,8 @@ export class MSPv2 extends MSP {
       throw new Error(`Invalid CRC: got ${hex(crc)} expected ${hex(calculatedCRC)}`)
     }
 
+    this.#log.debug(`Decoded command with id ${command}, payload size: ${payload.byteLength}`)
+
     return {
       buffer: this.#getBufferDataView(buffer),
       protocol: this,
@@ -34,6 +68,8 @@ export class MSPv2 extends MSP {
   }
 
   encode(direction, command, payload = []) {
+    this.#log.debug(`Encoding command ${hex(command, 4)}/${command} with payload length ${payload.length}`)
+
     payload = payload ? payload.toDataView() : new DataView(new ArrayBuffer(0))
     const length = payload.byteLength + 9
     const view = new Uint8Array(length)
@@ -102,23 +138,4 @@ export class MSPv2 extends MSP {
   #getCRC(buffer) {
     return buffer[buffer.length - 1]    
   }
-}
-
-readonly(MSPv2, 'PROTOCOL_ID', 'X'.charCodeAt(0))
-readonly(MSPv2, 'PROTOCOL_NAME', 'MSPv2')
-
-MSPv2.decodeCommandCode = function(buffer) {
-  return getByteAtOffset(buffer, 4) | (getByteAtOffset(buffer, 5) << 8)
-}
-
-MSPv2.decodePayloadOffset = function(buffer) {
-  return 8
-}
-
-MSPv2.decodePayloadLength = function(buffer) {
-  return getByteAtOffset(buffer, 6) | (getByteAtOffset(buffer, 7) << 8)
-}
-
-MSPv2.decodeExpectedPacketLength = function(buffer) {
-  return MSPv2.decodePayloadLength(buffer) + MSPv2.decodePayloadOffset(buffer) + 1 // crc at the end
 }
