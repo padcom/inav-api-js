@@ -38,6 +38,18 @@ export class Response {
     else return ''
   }
 
+  getBool8(offset, ...args) {
+    return this.payload.byteLength - 1 >= offset ? Boolean(this.payload.getUint8(offset, ...args)) : undefined
+  }
+
+  getBool16(offset, ...args) {
+    return this.payload.byteLength - 1 >= offset ? Boolean(this.payload.getUint16(offset, ...args)) : undefined
+  }
+
+  getBool32(offset, ...args) {
+    return this.payload.byteLength - 1 >= offset ? Boolean(this.payload.getUint32(offset, ...args)) : undefined
+  }
+
   getInt8(offset, ...args) {
     return this.payload.byteLength - 1 >= offset ? this.payload.getInt8(offset, ...args) : undefined
   }
