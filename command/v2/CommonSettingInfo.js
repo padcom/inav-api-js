@@ -136,8 +136,9 @@ export class CommonSettingInfoResponse extends Response {
       case TYPE_FLOAT:
         return this.getFloat32(this.payload.byteLength - 4, true)
       case TYPE_STRING:
-        throw new Error('Don\'t know yet how to read string values')
-        // return this.getUint32(this.payload.byteLength - 4, true)
+        const valuesLength = this.values.map(value => value.length + 1).reduce((acc, length) => acc + length, 0)
+        const offset = this.name.length + 18 + valuesLength
+        return this.getString(offset)
       default:
         throw new Error(`Unknown value type ${this.type}`)
     }
