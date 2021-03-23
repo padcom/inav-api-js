@@ -231,9 +231,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-// await testReboot(port, registry, new MSPv1(), reconnectionManager)
-// await cli(port)
-// await main(port, registry)
+await testReboot(port, registry, new MSPv1(), reconnectionManager)
+await cli(port)
+await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
