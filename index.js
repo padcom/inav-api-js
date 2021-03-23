@@ -7,9 +7,9 @@ import { MSPv2 } from './MSPv2'
 import { CommandRegistry } from './CommandRegistry'
 import { BufferedPacketReader } from './BufferedPacketReader'
 import { PacketDecoder } from './PacketDecoder'
-import { sendAndWaitForResponse } from './communication'
+import { sendAndWaitForResponse, mspSend } from './communication'
 import { CLI } from './CLI'
-import { waitForSingleEvent } from './utils'
+import { waitForSingleEvent, sleep } from './utils'
 
 import { VersionRequest } from './command/Version'
 import { NameRequest } from './command/Name'
@@ -76,6 +76,13 @@ import { SetRebootRequest } from './command/SetReboot'
 
 async function sendTestRequest(port, registry, request, protocol, timeout = 300) {
   console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
+}
+
+async function testReboot(port, registry, protocol, reconnectionManager) {
+  const request = new SetRebootRequest()
+  console.log('[TEST] Reboot', await mspSend(port, request, protocol, true))
+  console.log('[TEST] Port closed', await waitForSingleEvent(port, 'close', 5000))
+  console.log('[TEST] Reconnected', await reconnectionManager.connect())
 }
 
 async function test(port, registry, protocol) {
@@ -189,6 +196,7 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
+await testReboot(port, registry, new MSPv1(), reconnectionManager)
 await cli(port)
 await main(port, registry)
 
