@@ -1,5 +1,6 @@
 import { Transform } from 'stream'
-import { MSP } from './MSP'
+import { MSP } from './protocol/MSP'
+import { hex } from './utils'
 
 export class PacketEncoder extends Transform {
   #protocol = null

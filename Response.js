@@ -15,7 +15,15 @@ export class Response {
     const plLen = this.payload.byteLength
     const properties = this.getToStringContent()
 
-    return `${this.constructor.name} (protocol: ${hex(protocol)}/${protocolName}, command: ${hex(command)}/${command}, payload: ${hex(plLen)} bytes) ${properties}`
+    const parts = [
+      this.constructor.name,
+      ` (protocol: ${hex(protocol, 4)}/${protocolName}, command: ${hex(command, 4)}/${command}, payload: ${hex(plLen)} bytes)`,
+      properties
+    ]
+
+    return parts.join(' ')
+
+    // return `${this.constructor.name} (protocol: ${hex(protocol, 4)}/${protocolName}, command: ${hex(command, 4)}/${command}, payload: ${hex(plLen)} bytes) ${properties}`
   }
 
   getToStringContent() {

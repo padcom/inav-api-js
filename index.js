@@ -2,8 +2,8 @@
 
 import SerialPort from 'serialport'
 import { ReconnectionManager } from './ReconnectionManager'
-import { MSPv1 } from './MSPv1'
-import { MSPv2 } from './MSPv2'
+import { MSPv1 } from './protocol/MSPv1'
+import { MSPv2 } from './protocol/MSPv2'
 import { CommandRegistry } from './CommandRegistry'
 import { BufferedPacketReader } from './BufferedPacketReader'
 import { PacketDecoder } from './PacketDecoder'
@@ -11,70 +11,72 @@ import { sendAndWaitForResponse, mspSend } from './communication'
 import { CLI } from './CLI'
 import { waitForSingleEvent, sleep } from './utils'
 
-import { VersionRequest } from './command/Version'
-import { NameRequest } from './command/Name'
-import { FcVariantRequest } from './command/FcVariant'
-import { FcVersionRequest } from './command/FcVersion'
-import { BuildInfoRequest } from './command/BuildInfo'
-import { IdentRequest } from './command/Ident'
-import { StatusExRequest } from './command/StatusEx'
-import { ActiveBoxesRequest } from './command/ActiveBoxes'
-import { SensorStatusRequest } from './command/SensorStatus'
-import { SensorConfigRequest } from './command/SensorConfig'
-import { RawImuRequest } from './command/RawImu'
-import { ServoRequest } from './command/Servo'
-import { MotorRequest } from './command/Motor'
-import { RcRequest } from './command/Rc'
-import { RawGpsRequest } from './command/RawGps'
-import { CompGpsRequest } from './command/CompGps'
-import { GpsStatisticsRequest } from './command/GpsStatistics'
-import { AttitudeRequest } from './command/Attitude'
-import { AltitudeRequest } from './command/Altitude'
-import { SonarRequest } from './command/Sonar'
-import { AnalogRequest } from './command/Analog'
-import { RcTuningRequest } from './command/RcTuning'
-import { PidRequest } from './command/Pid'
-import { ArmingConfigRequest } from './command/ArmingConfig'
-import { LoopTimeRequest } from './command/LoopTime'
-import { ThreeDeeRequest } from './command/3D'
-import { BoxNamesRequest } from './command/BoxNames'
-import { PidNamesRequest } from './command/PidNames'
-import { WPRequest } from './command/WP'
-import { BoxIDsRequest } from './command/BoxIDs'
-import { ServoMixRulesRequest } from './command/ServoMixRules'
-import { RxConfigRequest } from './command/RxConfig'
-import { NavPosHoldRequest } from './command/NavPosHold'
-import { CalibrationDataRequest } from './command/CalibrationData'
-import { PositionEstimationConfigRequest } from './command/PositionEstimationConfig'
-import { RthAndLandConfigRequest } from './command/RthAndLandConfig'
-import { ChannelForwardingRequest } from './command/ChannelForwarding'
-import { ModeRangesRequest } from './command/ModeRanges'
-import { LedColorsRequest } from './command/LedColors'
-import { AdjustmentRangesRequest } from './command/AdjustmentRanges'
-import { CfSerialConfigRequest } from './command/CfSerialConfig'
-import { DataFlashSummaryRequest } from './command/DataFlashSummary'
-import { FailsafeConfigRequest } from './command/FailsafeConfig'
-import { SdCardSummaryRequest } from './command/SdCardSummary'
-import { BlackBoxConfigRequest } from './command/BlackBoxConfig'
-import { TransponderConfigRequest } from './command/TransponderConfig'
-import { VtxConfigRequest } from './command/VtxConfig'
-import { AdvancedConfigRequest } from './command/AdvancedConfig'
-import { FilterConfigRequest } from './command/FilterConfig'
-import { PidAdvancedRequest } from './command/PidAdvanced'
-import { MotorPinsRequest } from './command/MotorPins'
-import { ServoConfigurationsRequest } from './command/ServoConfigurations'
-import { RcDeadbandRequest } from './command/RcDeadband'
-import { SensorAlignmentRequest } from './command/SensorAlignment'
-import { RtcRequest } from './command/Rtc'
-import { UidRequest } from './command/Uid'
-import { AccTrimRequest } from './command/AccTrim'
-import { GpsSvInfoRequest } from './command/GpsSvInfo'
-import { RxMapRequest } from './command/RxMap'
-import { BfConfigRequest } from './command/BfConfig'
-import { BfBuildInfoRequest } from './command/BfBuildInfo'
-import { SetRebootRequest } from './command/SetReboot'
+import { VersionRequest } from './command/v1/Version'
+import { NameRequest } from './command/v1/Name'
+import { FcVariantRequest } from './command/v1/FcVariant'
+import { FcVersionRequest } from './command/v1/FcVersion'
+import { BuildInfoRequest } from './command/v1/BuildInfo'
+import { IdentRequest } from './command/v1/Ident'
+import { StatusExRequest } from './command/v1/StatusEx'
+import { ActiveBoxesRequest } from './command/v1/ActiveBoxes'
+import { SensorStatusRequest } from './command/v1/SensorStatus'
+import { SensorConfigRequest } from './command/v1/SensorConfig'
+import { RawImuRequest } from './command/v1/RawImu'
+import { ServoRequest } from './command/v1/Servo'
+import { MotorRequest } from './command/v1/Motor'
+import { RcRequest } from './command/v1/Rc'
+import { RawGpsRequest } from './command/v1/RawGps'
+import { CompGpsRequest } from './command/v1/CompGps'
+import { GpsStatisticsRequest } from './command/v1/GpsStatistics'
+import { AttitudeRequest } from './command/v1/Attitude'
+import { AltitudeRequest } from './command/v1/Altitude'
+import { SonarRequest } from './command/v1/Sonar'
+import { AnalogRequest } from './command/v1/Analog'
+import { RcTuningRequest } from './command/v1/RcTuning'
+import { PidRequest } from './command/v1/Pid'
+import { ArmingConfigRequest } from './command/v1/ArmingConfig'
+import { LoopTimeRequest } from './command/v1/LoopTime'
+import { ThreeDeeRequest } from './command/v1/3D'
+import { BoxNamesRequest } from './command/v1/BoxNames'
+import { PidNamesRequest } from './command/v1/PidNames'
+import { WPRequest } from './command/v1/WP'
+import { BoxIDsRequest } from './command/v1/BoxIDs'
+import { ServoMixRulesRequest } from './command/v1/ServoMixRules'
+import { RxConfigRequest } from './command/v1/RxConfig'
+import { NavPosHoldRequest } from './command/v1/NavPosHold'
+import { CalibrationDataRequest } from './command/v1/CalibrationData'
+import { PositionEstimationConfigRequest } from './command/v1/PositionEstimationConfig'
+import { RthAndLandConfigRequest } from './command/v1/RthAndLandConfig'
+import { ChannelForwardingRequest } from './command/v1/ChannelForwarding'
+import { ModeRangesRequest } from './command/v1/ModeRanges'
+import { LedColorsRequest } from './command/v1/LedColors'
+import { AdjustmentRangesRequest } from './command/v1/AdjustmentRanges'
+import { CfSerialConfigRequest } from './command/v1/CfSerialConfig'
+import { DataFlashSummaryRequest } from './command/v1/DataFlashSummary'
+import { FailsafeConfigRequest } from './command/v1/FailsafeConfig'
+import { SdCardSummaryRequest } from './command/v1/SdCardSummary'
+import { BlackBoxConfigRequest } from './command/v1/BlackBoxConfig'
+import { TransponderConfigRequest } from './command/v1/TransponderConfig'
+import { VtxConfigRequest } from './command/v1/VtxConfig'
+import { AdvancedConfigRequest } from './command/v1/AdvancedConfig'
+import { FilterConfigRequest } from './command/v1/FilterConfig'
+import { PidAdvancedRequest } from './command/v1/PidAdvanced'
+import { MotorPinsRequest } from './command/v1/MotorPins'
+import { ServoConfigurationsRequest } from './command/v1/ServoConfigurations'
+import { RcDeadbandRequest } from './command/v1/RcDeadband'
+import { SensorAlignmentRequest } from './command/v1/SensorAlignment'
+import { RtcRequest } from './command/v1/Rtc'
+import { UidRequest } from './command/v1/Uid'
+import { AccTrimRequest } from './command/v1/AccTrim'
+import { GpsSvInfoRequest } from './command/v1/GpsSvInfo'
+import { RxMapRequest } from './command/v1/RxMap'
+import { BfConfigRequest } from './command/v1/BfConfig'
+import { BfBuildInfoRequest } from './command/v1/BfBuildInfo'
+import { SetRebootRequest } from './command/v1/SetReboot'
 
-async function sendTestRequest(port, registry, request, protocol, timeout = 300) {
+import { SettingRequest as MSPv2SettingRequest } from './command/v2/Setting'
+
+async function sendTestRequest(port, registry, request, protocol, timeout = 1000) {
   console.log('[TEST]', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
 }
 
@@ -86,14 +88,6 @@ async function testReboot(port, registry, protocol, reconnectionManager) {
 }
 
 async function test(port, registry, protocol) {
-  const decodedPackages = port
-    .pipe(new BufferedPacketReader())
-    .pipe(new PacketDecoder(registry))
-
-  decodedPackages.on('data', response => {
-    console.log('[MAIN]', response.toString())
-  })
-
   console.log('[MAIN] Testing commands')
 
   await sendTestRequest(port, registry, new VersionRequest(), protocol)
@@ -161,9 +155,26 @@ async function test(port, registry, protocol) {
   console.log('[MAIN] Done')
 }
 
+async function testv2(port, request) {
+  const protocol = new MSPv2()
+  await sendTestRequest(port, registry, new MSPv2SettingRequest('receiver_type'), protocol)
+}
+
 async function main(port, registry) {
+  const decodedPackages = port
+    .pipe(new BufferedPacketReader())
+    .pipe(new PacketDecoder(registry))
+
+  decodedPackages.on('data', response => {
+    console.log('[MAIN]', response.toString())
+  })
+
   await test(port, registry, new MSPv1())
   await test(port, registry, new MSPv2())
+}
+
+async function mainv2(port, registry) {
+  await testv2(port, registry)
 }
 
 async function cli(port) {
@@ -196,9 +207,10 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-await testReboot(port, registry, new MSPv1(), reconnectionManager)
-await cli(port)
-await main(port, registry)
+// await testReboot(port, registry, new MSPv1(), reconnectionManager)
+// await cli(port)
+// await main(port, registry)
+await mainv2(port, registry)
 
 reconnectionManager.close()
 port.close()

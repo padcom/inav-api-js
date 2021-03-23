@@ -5,7 +5,7 @@ import { PacketEncoder } from './PacketEncoder'
 import { waitForSingleEvent, runWithTimeout } from './utils'
 
 export async function mspSend(port, request, protocol, debug = false) {
-  if (debug) console.log('[MSP] >', request)
+  if (debug) console.log('[MSP] >', request.toString())
 
   return new Promise((resolve, reject) => {
     const writter = new PassThrough({ readableObjectMode: true, writableObjectMode: true })
@@ -15,7 +15,6 @@ export async function mspSend(port, request, protocol, debug = false) {
       if (e) {
         reject(e)
       } else {
-        if (debug) console.log('[MSP] >', request)
         packetEncoder.unpipe(port)
         writter.unpipe(packetEncoder)
         packetEncoder.end()

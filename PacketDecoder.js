@@ -1,7 +1,7 @@
 import { Transform } from 'stream'
-import { MSP } from './MSP'
-import { MSPv1 } from './MSPv1'
-import { MSPv2 } from './MSPv2'
+import { MSP } from './protocol/MSP'
+import { MSPv1 } from './protocol/MSPv1'
+import { MSPv2 } from './protocol/MSPv2'
 
 const PROTOCOL_CLASSES = {
   [MSPv1.PROTOCOL_ID]: MSPv1,
