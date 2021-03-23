@@ -81,6 +81,7 @@ import { CommonSettingInfoRequest as MSPv2CommonSettingInfoRequest } from './com
 import { CommonPgListRequest as MSPv2CommonPgListRequest } from './command/v2/CommonPgList'
 import { CommonTzRequest as MSPv2CommonTzRequest } from './command/v2/CommonTz'
 import { CommonMotorMixerRequest as MSPv2CommonMotorMixerRequest } from './command/v2/CommonMotorMixer'
+import { CommonSerialConfigRequest as MSPv2CommonSerialConfigRequest } from './command/v2/CommonSerialConfig'
 
 
 const log = Logger.getLogger('MAIN')
@@ -89,7 +90,7 @@ async function sendTestRequest(port, registry, request, protocol, timeout = 1000
   log.info('TEST', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
 }
 
-async function testReboot(port, registry, protocol, reconnectionManager) {
+async function testReboot(port, protocol, reconnectionManager) {
   const request = new SetRebootRequest()
   log.info('TEST Reboot', await mspSend(port, request, protocol))
   log.info('TEST Port closed', await waitForSingleEvent(port, 'close', 5000))
@@ -174,6 +175,7 @@ async function testv2(port, request) {
   await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
 }
 
 async function main(port, registry) {
@@ -237,9 +239,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-// await testReboot(port, registry, new MSPv1(), reconnectionManager)
-// await cli(port)
-// await main(port, registry)
+await testReboot(port, new MSPv1(), reconnectionManager)
+await cli(port)
+await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
