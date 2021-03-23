@@ -106,12 +106,11 @@ export class CommonSettingInfoResponse extends Response {
 
   get values() {
     const result = []
-
     if (this.isLookupMode) {
-      let index = this.name.length + 18
+      let offset = this.name.length + 18
       for (let i = this.min; i < this.max; i++) {
-        const value = this.getString(index)
-        index += value.length + 1
+        const value = this.getString(offset)
+        offset += value.length + 1
         result.push(value)
       }
     }
@@ -120,6 +119,9 @@ export class CommonSettingInfoResponse extends Response {
   }
 
   get value() {
+    if (this.type === undefined) {
+      return undefined
+    }
     switch (this.type) {
       case TYPE_INT8:
         return this.getInt8(this.payload.byteLength - 1)
@@ -129,8 +131,6 @@ export class CommonSettingInfoResponse extends Response {
         return this.getInt16(this.payload.byteLength - 2, true)
       case TYPE_UINT16:
         return this.getUint16(this.payload.byteLength - 2, true)
-      case TYPE_INT32:
-        return this.getInt32(this.payload.byteLength - 4, true)
       case TYPE_UINT32:
         return this.getUint32(this.payload.byteLength - 4, true)
       case TYPE_FLOAT:
@@ -139,7 +139,7 @@ export class CommonSettingInfoResponse extends Response {
         throw new Error('Don\'t know yet how to read string values')
         // return this.getUint32(this.payload.byteLength - 4, true)
       default:
-        throw new Error('Unknown value type', this.type)
+        throw new Error(`Unknown value type ${this.type}`)
     }
   }
 }

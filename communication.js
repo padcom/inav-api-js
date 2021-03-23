@@ -52,7 +52,8 @@ export async function mspQuery(port, request, protocol, commandRegistry, timeout
       } else {
         return false
       }
-    } catch {
+    } catch (e) {
+      if ((e && e.message) !== 'Timeout') log.error(e.message || e)
       return false
     }
   })

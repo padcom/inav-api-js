@@ -165,6 +165,9 @@ async function testv2(port, request) {
   const protocol = new MSPv2()
   await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('receiver_type'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_provider'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('rx_spi_protocol'), protocol)
 }
 
 async function main(port, registry) {
@@ -199,7 +202,7 @@ async function cli(port) {
 
 // Logger.getLogger('MSP').level = Logger.Level.TRACE
 // Logger.getLogger('MSPV1').level = Logger.Level.TRACE
-Logger.getLogger('MSPV2').level = Logger.Level.TRACE
+// Logger.getLogger('MSPV2').level = Logger.Level.TRACE
 // Logger.getLogger('TIMER').level = Logger.Level.TRACE
 // Logger.getLogger('REQUEST').level = Logger.Level.TRACE
 // Logger.getLogger('RESPONSE').level = Logger.Level.TRACE
