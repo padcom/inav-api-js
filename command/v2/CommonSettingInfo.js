@@ -1,6 +1,8 @@
 import { Request } from '../../Request'
 import { Response } from '../../Response'
 
+import * as DataType from '../../model/DataType'
+
 export const MSP2_COMMON_SETTING_INFO = 0x1007
 
 export class CommonSettingInfoRequest extends Request {
@@ -19,17 +21,8 @@ export class CommonSettingInfoRequest extends Request {
   }
 }
 
-const SETTING_TYPE_OFFSET     = 0
 const SETTING_SECTION_OFFSET  = 4
 const SETTING_MODE_OFFSET     = 6
-
-const TYPE_UINT8              = 0 << SETTING_TYPE_OFFSET
-const TYPE_INT8               = 1 << SETTING_TYPE_OFFSET
-const TYPE_UINT16             = 2 << SETTING_TYPE_OFFSET
-const TYPE_INT16              = 3 << SETTING_TYPE_OFFSET
-const TYPE_UINT32             = 4 << SETTING_TYPE_OFFSET
-const TYPE_FLOAT              = 5 << SETTING_TYPE_OFFSET
-const TYPE_STRING             = 6 << SETTING_TYPE_OFFSET
 
 const MASTER_VALUE            = 0 << SETTING_SECTION_OFFSET
 const PROFILE_VALUE           = 1 << SETTING_SECTION_OFFSET
@@ -123,19 +116,19 @@ export class CommonSettingInfoResponse extends Response {
       return undefined
     }
     switch (this.type) {
-      case TYPE_INT8:
+      case DataType.TYPE_INT8:
         return this.getInt8(this.payload.byteLength - 1)
-      case TYPE_UINT8:
+      case DataType.TYPE_UINT8:
         return this.getUint8(this.payload.byteLength - 1)
-      case TYPE_INT16:
+      case DataType.TYPE_INT16:
         return this.getInt16(this.payload.byteLength - 2, true)
-      case TYPE_UINT16:
+      case DataType.TYPE_UINT16:
         return this.getUint16(this.payload.byteLength - 2, true)
-      case TYPE_UINT32:
+      case DataType.TYPE_UINT32:
         return this.getUint32(this.payload.byteLength - 4, true)
-      case TYPE_FLOAT:
+      case DataType.TYPE_FLOAT:
         return this.getFloat32(this.payload.byteLength - 4, true)
-      case TYPE_STRING:
+      case DataType.TYPE_STRING:
         const valuesLength = this.values.map(value => value.length + 1).reduce((acc, length) => acc + length, 0)
         const offset = this.name.length + 18 + valuesLength
         return this.getString(offset)

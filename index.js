@@ -76,7 +76,10 @@ import { BfConfigRequest } from './command/v1/BfConfig'
 import { BfBuildInfoRequest } from './command/v1/BfBuildInfo'
 import { SetRebootRequest } from './command/v1/SetReboot'
 
+import * as DataType from './model/DataType'
+
 import { SettingRequest as MSPv2SettingRequest } from './command/v2/Setting'
+import { SetSettingRequest as MSPv2SetSettingRequest } from './command/v2/SetSetting'
 import { CommonSettingInfoRequest as MSPv2CommonSettingInfoRequest } from './command/v2/CommonSettingInfo'
 import { CommonPgListRequest as MSPv2CommonPgListRequest } from './command/v2/CommonPgList'
 import { CommonTzRequest as MSPv2CommonTzRequest } from './command/v2/CommonTz'
@@ -87,7 +90,10 @@ import { CommonSerialConfigRequest as MSPv2CommonSerialConfigRequest } from './c
 const log = Logger.getLogger('MAIN')
 
 async function sendTestRequest(port, registry, request, protocol, timeout = 1000) {
-  log.info('TEST', (await sendAndWaitForResponse(port, request, protocol, registry, timeout)).toString())
+  const response = await sendAndWaitForResponse(port, request, protocol, registry, timeout)
+  log.info('TEST', response.toString())
+
+  return response
 }
 
 async function testReboot(port, protocol, reconnectionManager) {
@@ -165,14 +171,38 @@ async function test(port, registry, protocol) {
   log.info('Done')
 }
 
+function assert(condition, message) {
+  if (!condition) {
+    throw new Error(message)
+  }
+}
+
+async function testSettingIndexFromList(port, protocol, setting, value) {
+  const configuration = await sendAndWaitForResponse(port, new MSPv2CommonSettingInfoRequest(setting), protocol, registry)
+  const index = configuration.values.findIndex(item => item == value)
+  assert(index !== -1, `Unable to find index of value ${value} in ${configuration.values}`)
+  await sendAndWaitForResponse(port, new MSPv2SetSettingRequest(configuration.index, configuration.type, index), protocol, registry)
+  const response = await sendAndWaitForResponse(port, new MSPv2CommonSettingInfoRequest(setting), protocol, registry)
+  assert(index === response.value, `Failed to set setting ${setting} to value ${value} (index: ${index}); got ${response.value}`)
+  log.info(`TEST Successfully set ${setting} to ${value}`)
+}
+
+async function testSettingString(port, protocol, setting, value) {
+  const configuration = await sendAndWaitForResponse(port, new MSPv2CommonSettingInfoRequest(setting), protocol, registry)
+  await sendAndWaitForResponse(port, new MSPv2SetSettingRequest(configuration.index, configuration.type, value), protocol, registry)
+  const response = await sendAndWaitForResponse(port, new MSPv2CommonSettingInfoRequest(setting), protocol, registry)
+  assert(value === response.value, `Failed to set setting ${setting} to value ${value}; got ${response.value}`)
+  log.info(`TEST Successfully set ${setting} to ${value}`)
+}
+
 async function testv2(port, request) {
   const protocol = new MSPv2()
+  await testSettingIndexFromList(port, protocol, 'serialrx_provider', 'SBUS')
+  await testSettingString(port, protocol, 'name', Date.now().toString())
+
   await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('receiver_type'), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_provider'), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('display_force_sw_blink'), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('name'), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
@@ -240,9 +270,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-await testReboot(port, new MSPv1(), reconnectionManager)
-await cli(port)
-await main(port, registry)
+// await testReboot(port, new MSPv1(), reconnectionManager)
+// await cli(port)
+// await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
