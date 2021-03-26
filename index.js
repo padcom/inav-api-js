@@ -87,6 +87,7 @@ import { CommonMotorMixerRequest as MSPv2CommonMotorMixerRequest } from './comma
 import { CommonSerialConfigRequest as MSPv2CommonSerialConfigRequest } from './command/v2/CommonSerialConfig'
 import { InavAnalogRequest as MSPv2InavAnalogRequest } from './command/v2/InavAnalog'
 import { InavOpticalFlowRequest as MSPv2InavOpticalFlowRequest } from './command/v2/InavOpticalFlow'
+import { InavMiscRequest as MSPv2InavMiscRequest } from './command/v2/InavMisc'
 
 
 const log = Logger.getLogger('MAIN')
@@ -211,6 +212,7 @@ async function testv2(port, request) {
   await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavAnalogRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavOpticalFlowRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavMiscRequest(), protocol)
 }
 
 async function main(port, registry) {
