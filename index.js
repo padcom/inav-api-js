@@ -89,6 +89,7 @@ import { InavAnalogRequest as MSPv2InavAnalogRequest } from './command/v2/InavAn
 import { InavOpticalFlowRequest as MSPv2InavOpticalFlowRequest } from './command/v2/InavOpticalFlow'
 import { InavMiscRequest as MSPv2InavMiscRequest } from './command/v2/InavMisc'
 import { InavBatteryConfigRequest as MSPv2InavBatteryConfigRequest } from './command/v2/InavBatteryConfig'
+import { InavRateProfileRequest as MSPv2InavRateProfileRequest } from './command/v2/InavRateProfile'
 
 
 const log = Logger.getLogger('MAIN')
@@ -215,6 +216,7 @@ async function testv2(port, request) {
   await sendTestRequest(port, registry, new MSPv2InavOpticalFlowRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavMiscRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavBatteryConfigRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavRateProfileRequest(), protocol)
 }
 
 async function main(port, registry) {
