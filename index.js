@@ -198,16 +198,16 @@ async function testSettingString(port, protocol, setting, value) {
 
 async function testv2(port, request) {
   const protocol = new MSPv2()
-  // await testSettingIndexFromList(port, protocol, 'serialrx_provider', 'SBUS')
-  // await testSettingString(port, protocol, 'name', Date.now().toString())
+  await testSettingIndexFromList(port, protocol, 'serialrx_provider', 'SBUS')
+  await testSettingString(port, protocol, 'name', Date.now().toString())
 
-  // await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('display_force_sw_blink'), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
-  // await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('display_force_sw_blink'), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavAnalogRequest(), protocol)
 }
 
@@ -236,16 +236,16 @@ async function main(port, registry) {
 
   const mspv2 = new MSPv2()
   mspv2.on('encoding', args => {
-    log.info('Encoding V2 command', args)
+    log.debug('Encoding V2 command', args)
   })
   mspv1.on('encoded', buffer => {
-    log.info('Encoded V1 command', buffer)
+    log.debug('Encoded V1 command', buffer)
   })
   mspv2.on('decoding', buffer => {
-    log.info('Decoding V2 buffer', buffer)
+    log.debug('Decoding V2 buffer', buffer)
   })
   mspv1.on('decoded', args => {
-    log.info('Decoded V1 buffer', args)
+    log.debug('Decoded V1 buffer', args)
   })
 
   await test(port, registry, mspv1)
@@ -269,13 +269,14 @@ async function cli(port) {
   log.info('Done')
 }
 
-Logger.getLogger('MSP').level = LogLevel.trace
-Logger.getLogger('MSPV1').level = LogLevel.trace
-Logger.getLogger('MSPV2').level = LogLevel.trace
-Logger.getLogger('TIMER').level = LogLevel.trace
-Logger.getLogger('REQUEST').level = LogLevel.trace
-Logger.getLogger('RESPONSE').level = LogLevel.trace
-Logger.getLogger('COMM').level = LogLevel.trace
+Logger.getLogger('MAIN').level = LogLevel.info
+// Logger.getLogger('MSP').level = LogLevel.trace
+// Logger.getLogger('MSPV1').level = LogLevel.trace
+// Logger.getLogger('MSPV2').level = LogLevel.trace
+// Logger.getLogger('TIMER').level = LogLevel.trace
+// Logger.getLogger('REQUEST').level = LogLevel.trace
+// Logger.getLogger('RESPONSE').level = LogLevel.trace
+// Logger.getLogger('COMM').level = LogLevel.trace
 
 Logger.events.on('trace', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
 Logger.events.on('debug', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
@@ -300,9 +301,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-// await testReboot(port, new MSPv1(), reconnectionManager)
-// await cli(port)
-// await main(port, registry)
+await testReboot(port, new MSPv1(), reconnectionManager)
+await cli(port)
+await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
