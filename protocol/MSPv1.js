@@ -34,6 +34,10 @@ export class MSPv1 extends MSP {
   }
 
   decode(buffer) {
+    this.#log.trace(`Decoding; Buffer length ${buffer.byteLength}`)
+    this.#log.trace(buffer)
+    this.emit('decoding', buffer)
+
     const begin = MSP.decodeStartCode(buffer)
     if (begin !== MSP.START_BYTE) {
       throw new Error(`Invalid start byte ${hex(buffer[0])}`)
@@ -55,6 +59,7 @@ export class MSPv1 extends MSP {
     }
 
     this.#log.debug(`Decoded command with id ${command}, payload size: ${payload.byteLength}`)
+    this.emit('decoded', { buffer, direction, command, payload })
 
     return {
       buffer: this.#getBufferDataView(buffer),
@@ -67,6 +72,7 @@ export class MSPv1 extends MSP {
 
   encode(direction, command, payload) {
     this.#log.debug(`Encoding command ${hex(command)}/${command} with payload length ${payload.length}`)
+    this.emit('encoding', { direction, command, payload })
 
     const payloadLength = payload && payload.length ? payload.length : 0;
     const length = payloadLength + 6;
@@ -81,7 +87,12 @@ export class MSPv1 extends MSP {
     }
     view[length-1] = this.#checksum(view);
 
-    return Buffer.from(view)
+    const buffer = Buffer.from(view)
+
+    this.#log.trace('Encoded buffer', buffer)
+    this.emit('encoded', buffer)
+
+    return buffer
   }
 
   #getCommand(buffer) {

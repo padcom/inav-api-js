@@ -1,4 +1,6 @@
-export class MSP {
+import { EventEmitter } from 'events'
+
+export class MSP extends EventEmitter {
   static get START_BYTE() {
     return '$'.charCodeAt(0)
   }
