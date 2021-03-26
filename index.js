@@ -85,6 +85,7 @@ import { CommonPgListRequest as MSPv2CommonPgListRequest } from './command/v2/Co
 import { CommonTzRequest as MSPv2CommonTzRequest } from './command/v2/CommonTz'
 import { CommonMotorMixerRequest as MSPv2CommonMotorMixerRequest } from './command/v2/CommonMotorMixer'
 import { CommonSerialConfigRequest as MSPv2CommonSerialConfigRequest } from './command/v2/CommonSerialConfig'
+import { InavAnalogRequest as MSPv2InavAnalogRequest } from './command/v2/InavAnalog'
 
 
 const log = Logger.getLogger('MAIN')
@@ -197,16 +198,17 @@ async function testSettingString(port, protocol, setting, value) {
 
 async function testv2(port, request) {
   const protocol = new MSPv2()
-  await testSettingIndexFromList(port, protocol, 'serialrx_provider', 'SBUS')
-  await testSettingString(port, protocol, 'name', Date.now().toString())
+  // await testSettingIndexFromList(port, protocol, 'serialrx_provider', 'SBUS')
+  // await testSettingString(port, protocol, 'name', Date.now().toString())
 
-  await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('display_force_sw_blink'), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
-  await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
+  // await sendTestRequest(port, registry, new MSPv2SettingRequest(1), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('serialrx_inverted'), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonSettingInfoRequest('display_force_sw_blink'), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonPgListRequest(), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonTzRequest(), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonMotorMixerRequest(), protocol)
+  // await sendTestRequest(port, registry, new MSPv2CommonSerialConfigRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavAnalogRequest(), protocol)
 }
 
 async function main(port, registry) {
@@ -298,9 +300,9 @@ await reconnectionManager.connect()
 const registry = new CommandRegistry()
 await registry.init()
 
-await testReboot(port, new MSPv1(), reconnectionManager)
-await cli(port)
-await main(port, registry)
+// await testReboot(port, new MSPv1(), reconnectionManager)
+// await cli(port)
+// await main(port, registry)
 await mainv2(port, registry)
 
 reconnectionManager.close()
