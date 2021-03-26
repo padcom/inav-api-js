@@ -32,7 +32,6 @@ export class MSPv2 extends MSP {
   
   decode(buffer) {
     this.#log.trace(`Decoding; Buffer length ${buffer.byteLength}`)
-    this.#log.trace(buffer.toString())
     this.#log.trace(buffer)
   
     const begin = MSP.decodeStartCode(buffer)

@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events'
 
-export const LOG_LEVEL = Object.freeze({
-  TRACE: 0,
-  DEBUG: 1,
-  INFO : 2,
-  WARN : 3,
-  ERROR: 4
+export const LogLevel = Object.freeze({
+  trace: 0,
+  debug: 1,
+  info : 2,
+  warn : 3,
+  error: 4
 })
 
 export class Logger {
@@ -26,9 +26,9 @@ export class Logger {
   }
 
   #name = 'DEFAULT'
-  #level = LOG_LEVEL.DEBUG
+  #level = LogLevel.debug
 
-  constructor(name, level = LOG_LEVEL.INFO) {
+  constructor(name, level = LogLevel.info) {
     this.#name = name
     this.#level = level
   }
@@ -38,27 +38,27 @@ export class Logger {
   }
 
   trace(...args) {
-    if (this.#level <= LOG_LEVEL.TRACE)
+    if (this.#level <= LogLevel.trace)
       Logger.#events.emit('trace', { source: this.#name, args })
   }
 
   debug(...args) {
-    if (this.#level <= LOG_LEVEL.DEBUG)
+    if (this.#level <= LogLevel.debug)
       Logger.#events.emit('debug', { source: this.#name, args })
   }
 
   info(...args) {
-    if (this.#level <= LOG_LEVEL.INFO)
+    if (this.#level <= LogLevel.info)
       Logger.#events.emit('info', { source: this.#name, args })
   }
 
   warn(...args) {
-    if (this.#level <= LOG_LEVEL.WARN)
+    if (this.#level <= LogLevel.warn)
       Logger.#events.emit('warn', { source: this.#name, args })
   }
 
   error(...args) {
-    if (this.#level <= LOG_LEVEL.ERROR)
+    if (this.#level <= LogLevel.error)
       Logger.#events.emit('error', { source: this.#name, args })
   }
 }

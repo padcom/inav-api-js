@@ -2,7 +2,7 @@
 
 import SerialPort from 'serialport'
 import './extensions'
-import { Logger, LOG_LEVEL } from './logger'
+import { Logger, LogLevel } from './logger'
 import { ReconnectionManager } from './ReconnectionManager'
 import { MSPv1 } from './protocol/MSPv1'
 import { MSPv2 } from './protocol/MSPv2'
@@ -239,13 +239,13 @@ async function cli(port) {
   log.info('Done')
 }
 
-// Logger.getLogger('MSP').level = LOG_LEVEL.TRACE
-// Logger.getLogger('MSPV1').level = LOG_LEVEL.TRACE
-// Logger.getLogger('MSPV2').level = LOG_LEVEL.TRACE
-// Logger.getLogger('TIMER').level = LOG_LEVEL.TRACE
-// Logger.getLogger('REQUEST').level = LOG_LEVEL.TRACE
-// Logger.getLogger('RESPONSE').level = LOG_LEVEL.TRACE
-// Logger.getLogger('COMM').level = LOG_LEVEL.TRACE
+Logger.getLogger('MSP').level = LogLevel.trace
+Logger.getLogger('MSPV1').level = LogLevel.trace
+Logger.getLogger('MSPV2').level = LogLevel.trace
+Logger.getLogger('TIMER').level = LogLevel.trace
+Logger.getLogger('REQUEST').level = LogLevel.trace
+Logger.getLogger('RESPONSE').level = LogLevel.trace
+Logger.getLogger('COMM').level = LogLevel.trace
 
 Logger.events.on('trace', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
 Logger.events.on('debug', ({ source, args }) => console.log(`TRACE [${source}]`, ...args))
