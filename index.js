@@ -92,6 +92,9 @@ import { InavBatteryConfigRequest as MSPv2InavBatteryConfigRequest } from './com
 import { InavRateProfileRequest as MSPv2InavRateProfileRequest } from './command/v2/InavRateProfile'
 import { InavAirSpeedRequest as MSPv2InavAirSpeedRequest } from './command/v2/InavAirSpeed'
 import { InavMcBrakingRequest as MSPv2InavMcBrakingRequest } from './command/v2/InavMcBraking'
+import { InavOsdLayoutsRequest as MSPv2InavOsdLayoutsRequest } from './command/v2/InavOsdLayouts'
+import { InavOsdLayoutItemRequest as MSPv2InavOsdLayoutItemRequest } from './command/v2/InavOsdLayouts'
+import { InavOsdLayoutItemsRequest as MSPv2InavOsdLayoutItemsRequest } from './command/v2/InavOsdLayouts'
 
 
 const log = Logger.getLogger('MAIN')
@@ -221,6 +224,9 @@ async function testv2(port, request) {
   await sendTestRequest(port, registry, new MSPv2InavRateProfileRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavAirSpeedRequest(), protocol)
   await sendTestRequest(port, registry, new MSPv2InavMcBrakingRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavOsdLayoutsRequest(), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavOsdLayoutItemRequest(0, 0), protocol)
+  await sendTestRequest(port, registry, new MSPv2InavOsdLayoutItemsRequest(0), protocol)
 }
 
 async function main(port, registry) {
