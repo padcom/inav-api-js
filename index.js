@@ -75,6 +75,7 @@ import { RxMapRequest } from './command/v1/RxMap'
 import { BfConfigRequest } from './command/v1/BfConfig'
 import { BfBuildInfoRequest } from './command/v1/BfBuildInfo'
 import { SetRebootRequest } from './command/v1/SetReboot'
+import { BoardInfoRequest } from './command/v1/BoardInfo'
 
 import * as DataType from './model/DataType'
 
@@ -179,6 +180,8 @@ async function test(port, registry, protocol) {
   await sendTestRequest(port, registry, new RxMapRequest(), protocol)
   await sendTestRequest(port, registry, new BfConfigRequest(), protocol)
   await sendTestRequest(port, registry, new BfBuildInfoRequest(), protocol)
+  await sendTestRequest(port, registry, new BoardInfoRequest(), protocol)
+  
 
   log.info('Done')
 }

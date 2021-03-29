@@ -66,7 +66,7 @@ export class ReconnectionManager extends EventEmitter {
   }
 
   #sendIdentRequest() {
-    const cmd = Buffer.from([ '$'.charCodeAt(0), 'M'.charCodeAt(0), '<'.charCodeAt(0), 0, 1, 1 ])
+    const cmd = Buffer.from([ '$'.charCodeAt(0), 'M'.charCodeAt(0), '<'.charCodeAt(0), 0, 100, 100 ])
     return this.#port.write(cmd)
   }
 
